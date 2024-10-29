@@ -204,3 +204,104 @@ Demo is available at [demo.descriptor.ai](https://demo.descriptor.ai).
 
 </Accordion>
 </AccordionGroup>
+
+### Metrics
+
+#### Speech Metrics
+
+<AccordionGroup>
+
+<Accordion title="Total Call Duration">
+
+**Definition**: The overall length of the conversation.
+
+**Calculation**: Summing the duration from start to end of the audio file.
+
+**Unit**: Seconds.
+</Accordion>
+<Accordion title="Speaker to Silence Ratio">
+
+**Definition**: The ratio of each speaker’s talking time to silence time.
+
+**Calculation**: Duration of speech divided by silence duration per speaker.
+
+</Accordion>
+<Accordion title="Total Speech to Silence Ratio">
+
+**Definition**: Ratio of overall speaking time to silence during the entire conversation.
+
+**Calculation**: Total time spoken by all participants divided by total silence time.
+
+</Accordion>
+<Accordion title="Speaker Speech Ratio">
+
+**Definition**: The proportion of total speaking time for each speaker.
+
+**Calculation**: Individual speaker’s talk duration divided by total conversation time.
+
+</Accordion>
+<Accordion title="Simultaneous Speech Time">
+
+**Definition**: Time when two or more participants are speaking simultaneously.
+
+**Calculation**: Summing overlapping talk times for each speaker pair.
+
+</Accordion>
+<Accordion title="Simultaneous Speech Ratio">
+
+**Definition**: Ratio of simultaneous speaking time to total conversation time.
+
+**Calculation**: Simultaneous speech time divided by total call duration.
+
+</Accordion>
+<Accordion title="Interruption Count">
+
+**Definition**: Number of times one speaker interrupts another.
+
+**Calculation**: Counting instances where a new speaker starts before the current one finishes.
+
+</Accordion>
+<Accordion title="Interruption Rate">
+
+**Definition**: Frequency of interruptions per unit time.
+
+**Calculation**: Interruption count divided by total speaking time of all participants.
+</Accordion>
+</AccordionGroup>
+
+#### Emotion Metrics
+
+<AccordionGroup>
+
+<Accordion title="CSAT Rate">
+
+**Definition**: Evaluates customer satisfaction based on emotional tone and problem-solving effectiveness.
+
+**Calculation**: Derived from the percentage of issues resolved and weighted emotional states, scaled between 0 and 10.
+
+</Accordion>
+<Accordion title="DSAT (Dissatisfaction Score)">
+
+**Definition**: Measures levels of customer dissatisfaction, focusing on unresolved issues or negative emotions.
+
+**Calculation**: Based on unresolved problems and intensity of negative emotions during the conversation.
+</Accordion>
+<Accordion title="Emotional Volatility">
+
+**Definition**: Tracks frequency of emotional changes within the conversation.
+
+**Calculation**: Counts changes in emotional states and normalizes by total emotional shifts.
+</Accordion>
+<Accordion title="Emotional Evolution">
+
+**Definition**: Indicates the progression of emotions from start to end.
+
+**Calculation**: Normalized scoring of emotional states over time for each participant.
+</Accordion>
+<Accordion title="Emotional Phrases">
+
+**Definition**: Highlights specific phrases where participants expressed non-neutral emotions.
+
+**Calculation**: Extracts phrases tagged with emotional markers and lists them with timestamps.
+</Accordion>
+</AccordionGroup>
