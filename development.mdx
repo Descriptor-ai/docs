@@ -1,97 +1,206 @@
 ---
-title: 'Development'
-description: 'Learn how to preview changes locally'
+title: 'Features overview'
+description: 'Learn about the capabilities of Descriptor.AI'
 ---
 
+## What we offer
+
+Transform customer interactions with enterprise-grade analytics:
+
+<CardGroup>
+
+<Card title="Advanced Speech Intelligence" icon="waveform-lines">
+  ✅ Crystal-clear multi-speaker transcriptions with precise timestamps
+  
+  ✅ Emotion detection based on voice patterns and speech characteristics
+  
+  ✅ Real-time sentiment analysis for customer experience monitoring
+  
+  ❌ We don't claim to detect lies or deception
+  
+</Card>
+
+<Card title="Strategic Conversation Analysis" icon="chart-network">
+  ✅ Executive summaries of key conversation points
+  
+  ✅ Topic clustering to identify common themes
+  
+  ✅ Issue detection and resolution tracking
+    
+  ❌ We don't provide legal advice
+</Card>
+
+<Card title="Business Intelligence" icon="magnifying-glass-chart">
+  ✅ Custom conversation categorization
+  
+  ✅ Data-driven CSAT scoring
+  
+  ✅ Agent performance analytics
+  
+  ❌ We don't make business decisions for you
+  
+</Card>
+
+<Card title="Performance Analytics" icon="chart-mixed">
+  ✅ Conversation dynamics analysis
+  
+  ✅ Emotional intelligence metrics
+  
+  ✅ Actionable improvement insights
+    
+  ❌ We don't make hiring/firing recommendations
+</Card>
+
+</CardGroup>
+
+Our enterprise-ready solution transforms conversations into actionable business intelligence while maintaining ethical boundaries and realistic expectations.
+
+## Getting started
+<AccordionGroup>
+<Accordion title="API">
 <Info>
-  **Prerequisite**: Please install Node.js (version 19 or higher) before proceeding.
+  **Prerequisite**: Please verify amount of channels in the audio file before proceeding.
+</Info>
+### Step 1. Once obtained your API key, you can start using the API by following the [Quickstart Guide](/quickstart).
+
+1. Send a POST request with **audio file link** and **corresponding configuration** in JSON.
+2. Use the **result_id** from the response to fetch results.
+3. _Optional_: Configure a **webhook** to receive the results.
+
+Sample request body:
+<CodeGroup>
+
+```json
+{
+  "config": {
+    "language_code": "en-US",
+    "transcript_model": "descriptor-default",
+    "emotions_model": null,
+    "channels": 2,
+    "insights": {"summary": {}, "topics": {}, "labeling": {"categories": ["common questions", "access issues", "email update", "other"], "provider": "azure"}},
+    "metrics": ["speech"]
+  },
+  "audio": {
+    "uri": "https://example.com/audio.wav"
+  }
+  "webhook": "https://example.com/webhook_handler"
+}
+```
+
+</CodeGroup>
+
+### Step 2. Parameters and Configuration
+
+`language_code`: Language for ASR (e.g., en-US).
+
+`transcript_model`: Model for transcription (default is `descriptor`).
+
+`emotions_model`: Model for emotion analysis; set to null if not required.
+
+`channels`: Number of audio channels to process.
+
+`insights`: Define insights to extract (summary, topics, labeling, etc.). For each of insights the provider can be set separately.
+
+`sentiment_llm_provider`: specify the LLM provider for sentiment analysis (default is `azure`).
+
+`metrics`: Choose from speech and emo (omit emo if emotion analysis is not needed).
+
+`webhook`: URL to receive completed data.
+
+### Step 3. Retrieving Results
+
+Once the audio analysis is complete, you can retrieve the results using the unique **result_id** provided in the initial response. 
+To access the analysis result in JSON format, make a GET request to the [following endpoint](api-reference/endpoint/get).
+
+```
+curl -X 'GET' \
+  'https://demo.descriptor.ai/api/v1/offline/processing/{result_id}' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer YOUR_ACCESS_TOKEN'
+```
+
+<Note>
+Replace `{result_id}` with the actual ID received in the response when you submitted the audio file for processing.
+</Note>
+
+### Step 4. Response Overview
+
+Once processed, the response will contain the following information:
+
+- **CallTranscript**: Text transcription with timestamps for each speaker.
+- **Emotion Analysis** (if enabled): Emotion markers per phrase, including sentiment and intensity.
+- **Insights**: Extracted insights such as summary, topics, customer issues, labeling, CSAT score, agent actions, and customer requests/questions.
+- **Metrics**: Calculated metrics including speech and emotional metrics as configured.
+For more details, please visit [api-reference](api-reference/endpoint/get)
+This JSON response can be integrated into your system or visualized in a GUI for further analysis at https://demo.descriptor.ai/result/{result_id}. 
+
+If a webhook URL was provided in the configuration, the system will automatically send the completed results to the specified endpoint.
+</Accordion>
+<Accordion title="Demo App">
+
+For your convenience, we've prepared a demo app that showcases the capabilities of Descriptor.AI. 
+It's not required to run the app to use the API, but it might help you to understand how to use the API and what results you can get.
+<Info>
+We don't provide the app for production use, so please don't use it in a production environment.
 </Info>
 
-Step 1. Install Mintlify on your OS:
-
-<CodeGroup>
-
-```bash npm
-npm i -g mintlify
-```
-
-```bash yarn
-yarn global add mintlify
-```
-
-</CodeGroup>
-
-Step 2. Go to the docs are located (where you can find `mint.json`) and run the following command:
-
-```bash
-mintlify dev
-```
-
-The documentation website is now available at `http://localhost:3000`.
-
-### Custom Ports
-
-Mintlify uses port 3000 by default. You can use the `--port` flag to customize the port Mintlify runs on. For example, use this command to run in port 3333:
-
-```bash
-mintlify dev --port 3333
-```
-
-You will see an error like this if you try to run Mintlify in a port that's already taken:
-
-```md
-Error: listen EADDRINUSE: address already in use :::3000
-```
-
-## Mintlify Versions
-
-Each CLI is linked to a specific version of Mintlify. Please update the CLI if your local website looks different than production.
-
-<CodeGroup>
-
-```bash npm
-npm i -g mintlify@latest
-```
-
-```bash yarn
-yarn global upgrade mintlify
-```
-
-</CodeGroup>
-
-## Deployment
-
-<Tip>
-  Unlimited editors available under the [Pro
-  Plan](https://mintlify.com/pricing) and above.
-</Tip>
-
-You should see the following if the deploy successfully went through:
-
-<Frame>
-  <img src="/images/checks-passed.png" style={{ borderRadius: '0.5rem' }} />
-</Frame>
-
-## Troubleshooting
-
-Here's how to solve some common problems when working with the CLI.
-
-<AccordionGroup>
-  <Accordion title="Mintlify is not loading">
-    Update to Node v18. Run `mintlify install` and try again.
-  </Accordion>
-  <Accordion title="No such file or directory on Windows">
-Go to the `C:/Users/Username/.mintlify/` directory and remove the `mint`
-folder. Then Open the Git Bash in this location and run `git clone
-https://github.com/mintlify/mint.git`.
-
-Repeat step 3.
-
-  </Accordion>
-  <Accordion title="Getting an unknown error">
-    Try navigating to the root of your device and delete the ~/.mintlify folder.
-    Then run `mintlify dev` again.
-  </Accordion>
+Demo is available at [demo.descriptor.ai](https://demo.descriptor.ai).
+</Accordion>
 </AccordionGroup>
 
-Curious about what changed in a CLI version? [Check out the CLI changelog.](/changelog/command-line)
+## Understanding Insights & Metrics
+
+### Insights
+<AccordionGroup>
+<Accordion title="Summary">
+**Purpose**: Provides a concise description of the conversation's main points.
+
+**Output**: A brief text summary capturing the essence of the dialogue between the agent and customer.
+
+</Accordion>
+<Accordion title="Topics">
+**Purpose**: Identifies and lists the main topics discussed.
+
+**Output**: Array of keywords or phrases representing each topic covered in the conversation.
+
+</Accordion>
+<Accordion title="Problems">
+**Purpose**: Highlights customer-reported issues and whether they were resolved.
+
+**Output**: List of identified problems with resolution status and timestamps (links to specific dialogue portions).
+
+</Accordion>
+<Accordion title="Labeling">
+**Purpose**: Tags the conversation's primary category based on user-defined labels, aiding in classification.
+
+**Output**: A label that characterizes the dialogue type, such as "support inquiry" or "technical issue".
+
+**Customization**: Supports a user-defined list of categories to choose the appropriate label.
+</Accordion>
+<Accordion title="CSAT">
+**Purpose**: Assesses customer satisfaction through problem resolution and emotional analysis.
+
+**Output**: Satisfaction score ranging from 0 to 10, factoring in problem resolution and emotional context.
+
+</Accordion>
+<Accordion title="AgentActions">
+**Purpose**: Documents key actions taken by the agent during the conversation.
+
+**Output**: Array of actions (e.g., provided solutions, asked for clarification) with timestamps.
+
+</Accordion>
+<Accordion title="Questions">
+
+**Purpose**: Lists questions posed by the customer during the conversation.
+
+**Output**: Array of questions asked by the customer, with timestamps for reference.
+
+</Accordion>
+<Accordion title="CustomerRequests">
+
+**Purpose**: Captures specific requests or inquiries made by the customer to the agent.
+
+**Output**: List of requests or inquiries, with timestamps indicating where in the conversation they occurred.
+
+</Accordion>
+</AccordionGroup>
