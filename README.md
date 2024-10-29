@@ -1,4 +1,4 @@
-<!-- # Descriptor.AI API Documentation
+# Descriptor.AI API Documentation
 
 Descriptor.AI provides an advanced audio file analysis API, designed to process customer-agent conversations with granular insights. 
 It accepts audio files via a link in a JSON API request, specifying configuration options such as transcription, speech emotion recognition, sentiment analysis, and various dialogue insights. 
@@ -27,4 +27,4 @@ Install our Github App to auto propagate changes from your repo to your deployme
 #### Troubleshooting
 
 - Mintlify dev isn't running - Run `mintlify install` it'll re-install dependencies.
-- Page loads as a 404 - Make sure you are running in a folder with `mint.json` -->
+- Page loads as a 404 - Make sure you are running in a folder with `mint.json`
