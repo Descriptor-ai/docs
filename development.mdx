@@ -97,7 +97,11 @@ Sample request body:
 
 `emotions_model`: Model for emotion analysis; set to null if not required.
 
-`channels`: Number of audio channels to process.
+`emotions_alignment`: Alignment for emotion analysis; set to null if not required. Aligns speakers phrases with emotions with a higher granularity.
+
+`emotions_diarization`: Diarization for emotion analysis; set to null if not required. Answers the question who spoke what and how. Useful with alignment.
+
+`channels`: Number of audio channels to process. Maximum is 8.
 
 `insights`: Define insights to extract (summary, topics, labeling, etc.). For each of insights the provider can be set separately.
 
@@ -106,6 +110,7 @@ Sample request body:
 `metrics`: Choose from speech and emo (omit emo if emotion analysis is not needed).
 
 `webhook`: URL to receive completed data.
+
 
 ### Step 3. Retrieving Results
 
