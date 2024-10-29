@@ -22,8 +22,8 @@
     }
   ],
   "topbarCtaButton": {
-    "name": "Signup for Free",
-    "url": "https://descriptor.ai"
+    "name": "Request API Access",
+    "url": "mailto:alexa@descriptor.ai"
   },
   "tabs": [
     {
