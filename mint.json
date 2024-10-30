@@ -34,7 +34,7 @@
     {
       "name": "Full API Reference",
       "icon": "book-open-cover",
-      "openapi": "https://demo.descriptor.ai/api/openapi.json",
+      "openapi": "/openapi.json",
       "url": "docs/api/v1/offline"
     }
   ],
