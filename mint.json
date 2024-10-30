@@ -40,7 +40,7 @@
     {
       "name": "Application Areas",
       "icon": "message-bot",
-      "url": "/application-areas"
+      "url": "/checklist#application-areas-in-ccaaS-contact-center-as-a-service"
     }
   ],
   "navigation": [
@@ -50,7 +50,9 @@
         "introduction",
         "quickstart",
         "checklist",
+        "application_areas",
         "features",
+        "getting_started",
         "FAQ"
       ]
     },
