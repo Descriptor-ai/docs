@@ -12,7 +12,7 @@
             "Processing"
           ],
           "summary": "Analyze Single File",
-          "description": "This endpoint accepts analysis config and a link to the audio file, returning the `result_id`.\nUse the `/processing/{result_id}` handle to fetch an actual result.\nFor best results, use audio files with a sample rate of 16 kHz and 16 bits per sample.",
+          "description": "For the best results, use audio files with a sample rate of 16 kHz and 16 bits per sample.",
           "operationId": "analyze_single_file",
           "requestBody": {
             "content": {
@@ -598,8 +598,8 @@
           "tags": [
             "NLU"
           ],
-          "summary": "Csat",
-          "description": "Customer Satisfaction Score",
+          "summary": "CSAT",
+          "description": "Customer Satisfaction Rate",
           "operationId": "csat",
           "parameters": [
             {
@@ -1507,7 +1507,7 @@
                   "type": "null"
                 }
               ],
-              "title": "Csat Rate"
+              "title": "CSAT Rate"
             },
             "dsat": {
               "anyOf": [

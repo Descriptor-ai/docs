@@ -1,0 +1,28 @@
+---
+title: 'Integration'
+description: 'Adding the API for offline processing'
+---
+
+## Overview
+
+Integrating the Descriptor.AI API for offline processing is straightforward. The process involves two main steps:
+
+1. Uploading an audio file for analysis
+2. Retrieving the analysis results using the returned ID
+
+## Authentication
+
+All API requests require authentication using a Bearer token. You'll receive your access token upon signup.
+
+## Basic Integration Flow
+
+Here's a typical integration flow:
+
+1. Send a POST request to `/api/v1/offline/process` with your audio file
+2. Receive a `result_id` in the response
+3. Poll the `/api/v1/offline/processing/{result_id}` endpoint until processing is complete
+4. Retrieve the full analysis results
+
+<Note>
+Please do not hesitate to reach out to our [technical team](mailto:alexey.dubrov@descriptor.ai), if you have any questions.
+</Note>

@@ -27,41 +27,82 @@
   },
   "anchors": [
     {
-      "name": "Endpoint Examples",
-      "icon": "code",
-      "url": "api-reference/endpoint"
-    },
-    {
-      "name": "Full API Reference",
-      "icon": "book-open-cover",
-      "openapi": "/openapi.json",
-      "url": "docs/api/v1/offline"
+      "name": "API Reference",
+      "icon": "rectangle-terminal",
+      "url": "api-reference"
     }
   ],
   "navigation": [
     {
-      "group": "Get Started",
+      "group": "",
       "pages": [
-        "introduction",
-        "quickstart",
-        "checklist",
-        "application_areas",
-        "features",
-        "getting_started",
-        "api-reference/introduction",
-        "FAQ"
+        "introduction"
       ]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "About",
       "pages": [
-        "api-reference/endpoint/analyze",
-        "api-reference/endpoint/get"
+        "api-reference/features",
+        "api-reference/conversational_analysis",
+        "api-reference/application_areas",
+        "api-reference/FAQ"
+      ]
+    },
+    {
+      "group": "Quickstart",
+      "pages": [
+        "api-reference/analyze-single-file",
+        "api-reference/get-analysis-result",
+        "api-reference/gui"
+      ]
+    },
+    {
+      "group": "HOWTO",
+      "pages": [
+        "api-reference/introduction",
+        "api-reference/getting_started",
+        "api-reference/integration"
+      ]
+    },
+    {
+      "group": "Post-Call Insights",
+      "pages": [
+        "api-reference/csat",
+        "api-reference/emo-score",
+        "api-reference/customer-requests",
+        "api-reference/summary",
+        "api-reference/topics",
+        "api-reference/problems",
+        "api-reference/questions",
+        "api-reference/labeling",
+        "api-reference/sentiment",
+        "api-reference/keywords"
+      ]
+    },
+    {
+      "group": "Conversation Intelligence Metrics & Insights",
+      "pages": [
+        "api-reference/calculate-metrics",
+        "api-reference/division",
+        "api-reference/agent-actions"
+      ]
+    },
+    {
+      "group": "Config Options",
+      "pages": [
+        "api-reference/get-available-options"
       ]
     }
   ],
   "footerSocials": {
     "github": "https://github.com/Descriptor-ai",
     "linkedin": "https://www.linkedin.com/company/73231941/"
-  }
+  },
+  "api": {
+    "baseUrl": "https://demo.descriptor.ai/",
+    "playground": {
+      "mode": "show"
+    }
+  },
+  "openapi": "api-reference/openapi.json"
 }

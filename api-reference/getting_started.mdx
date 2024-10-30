@@ -1,0 +1,69 @@
+---
+title: 'Getting Started'
+description: 'Learn how to use Descriptor.AI API'
+---
+
+<AccordionGroup>
+<Accordion title="API">
+<Note>
+  **Prerequisite**: Please verify amount of channels in the audio file before proceeding.
+</Note>
+### Once obtained your API key, you can start using the API by following the [Quickstart Guide](/quickstart).
+
+To get the most out of our API, please refer to the [Understanding Insights & Metrics](#understanding-insights--metrics) section.
+
+### Basic Parameters and Configuration
+
+`language_code`: Choose the language of your call recordings (for example, en-US).
+
+`transcript_model`: Select which speech-to-text model to use. Our default 'descriptor' model is optimized for call centers. We don't send any audio and voice data to third-party services.
+
+`emotions_model`: Enable this to analyze vocalized customer emotions in calls. Set to null if you don't need speech emotion recognition.
+
+`emotions_alignment`: Get more detailed emotion analysis by matching specific phrases to emotions. Set to null if not needed.
+
+`emotions_diarization`: Track who said what and their emotional state throughout the call. Works best with emotions_alignment. Set to null if not needed.
+
+`channels`: Tell us how many separate audio streams are in your recording (for example, separate channels for agent and customer). We can handle up to 8.
+
+`insights`: Choose what information you want extracted from calls - like conversation summaries, main topics discussed, or call categorization. You can customize the AI service used for each type of analysis.
+
+`sentiment_llm_provider`: Choose which AI service analyzes the emotional tone of conversations. We use Azure by default, and we also support on-premises LLMs.
+
+`metrics`: Select which measurements you want: 'speech' for conversation flow metrics, 'emo' for emotional analysis metrics. Skip 'emo' if you don't need emotion tracking.
+
+`webhook`: Provide a web address where you want us to send the results when analysis is complete.
+
+
+### Response Overview
+
+Once processed, the response will contain the following information:
+
+- **Call Transcript**: Text transcription with timestamps for each speaker.
+- **Emotion Analysis** (if enabled): Emotion markers per phrase, including sentiment and intensity.
+- **Insights**: Extracted insights such as summary, topics, customer issues, labeling, CSAT score, agent actions, and customer requests/questions.
+- **Metrics**: Calculated metrics including speech and emotional metrics as configured.
+For more details, please visit [api-reference](get-analysis-result).
+This JSON response can be integrated into your system or visualized in a GUI for further analysis at https://demo.descriptor.ai/result/{result_id}. 
+
+If a webhook URL was provided in the configuration, the system will automatically send the completed results to the specified endpoint.
+</Accordion>
+<Accordion title="Demo App">
+
+For your convenience, we've prepared a demo app that showcases the capabilities of Descriptor.AI. 
+It's not required to run the app to use the API, but it might help you to understand how to use the API and what results you can get.
+
+Please refer to the section above for more details regarding the configuration and parameters.
+
+<Note>
+You need to have an API key to use the demo app.
+</Note>
+
+<Info>
+We don't provide the app for production use, so please don't use it in a production environment.
+</Info>
+
+Demo is available at [demo.descriptor.ai](https://demo.descriptor.ai).
+</Accordion>
+</AccordionGroup>
+

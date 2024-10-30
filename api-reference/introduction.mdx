@@ -12,18 +12,20 @@ description: 'Introduction to Descriptor.AI API'
 <Card
   title="Descriptor.AI API"
   icon="leaf"
-  href="/docs/api/v1/offline"
+  href="analyze-single-file"
 >
-  View our OpenAPI specification to get started with the endpoint examples
+  View our OpenAPI specification to get started with the endpoint examples.
 </Card>
 
 ## Authentication
 
 All API endpoints are authenticated using Bearer tokens and picked up from the specification file distributed on signup.
 
+<CodeBlock>
 ```bash
   curl -X 'GET' \
   'https://demo.descriptor.ai/api/v1/offline/processing/{result_id}' \
   -H 'accept: application/json' \
   -H 'Authorization: Bearer YOUR_ACCESS_TOKEN'
 ```
+</CodeBlock>
