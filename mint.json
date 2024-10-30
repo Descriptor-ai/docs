@@ -34,13 +34,8 @@
     {
       "name": "Full API Reference",
       "icon": "book-open-cover",
-      "openapi": "/openapi.json",
+      "openapi": "https://demo.descriptor.ai/api/openapi.json",
       "url": "/api-reference/introduction"
-    },
-    {
-      "name": "Application Areas",
-      "icon": "message-bot",
-      "url": "/checklist#application-areas-in-ccaaS-contact-center-as-a-service"
     }
   ],
   "navigation": [
