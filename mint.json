@@ -5,7 +5,7 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "https://descriptor.ai/images/Descriptor_logo.svg",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -33,7 +33,7 @@
   ],
   "anchors": [
     {
-      "name": "Documentation",
+      "name": "API Documentation",
       "icon": "book-open-cover",
       "openapi": "https://demo.descriptor.ai/api/openapi.json",
       "url": "api-reference/docs"
