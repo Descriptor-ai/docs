@@ -29,13 +29,13 @@
     {
       "name": "Endpoint Examples",
       "icon": "code",
-      "url": "/api-reference/endpoint"
+      "url": "api-reference/endpoint"
     },
     {
       "name": "Full API Reference",
       "icon": "book-open-cover",
       "openapi": "https://demo.descriptor.ai/api/openapi.json",
-      "url": "/api-reference/introduction"
+      "url": "docs/api/v1/offline"
     }
   ],
   "navigation": [
@@ -48,6 +48,7 @@
         "application_areas",
         "features",
         "getting_started",
+        "api-reference/introduction",
         "FAQ"
       ]
     },
