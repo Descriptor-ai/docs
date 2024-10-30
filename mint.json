@@ -5,7 +5,7 @@
     "dark": "/logo/dark.svg",
     "light": "/logo/light.svg"
   },
-  "favicon": "https://descriptor.ai/images/Descriptor_logo.svg",
+  "favicon": "/logo/light.svg",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",
@@ -25,18 +25,22 @@
     "name": "Request API Access",
     "url": "mailto:alexa@descriptor.ai"
   },
-  "tabs": [
-    {
-      "name": "API Reference",
-      "url": "api-reference"
-    }
-  ],
   "anchors": [
     {
-      "name": "API Documentation",
+      "name": "Endpoint Examples",
+      "icon": "code",
+      "url": "/api-reference/endpoint"
+    },
+    {
+      "name": "Full API Reference",
       "icon": "book-open-cover",
-      "openapi": "https://demo.descriptor.ai/api/openapi.json",
-      "url": "api-reference/docs"
+      "openapi": "/openapi.json",
+      "url": "/api-reference/introduction"
+    },
+    {
+      "name": "Application Areas",
+      "icon": "message-bot",
+      "url": "/application-areas"
     }
   ],
   "navigation": [
@@ -45,20 +49,15 @@
       "pages": [
         "introduction",
         "quickstart",
-        "development",
+        "checklist",
+        "features",
         "FAQ"
-      ]
-    },
-    {
-      "group": "API Documentation",
-      "pages": [
-        "api-reference/introduction"
       ]
     },
     {
       "group": "Endpoint Examples",
       "pages": [
-        "api-reference/endpoint/create",
+        "api-reference/endpoint/analyze",
         "api-reference/endpoint/get"
       ]
     }

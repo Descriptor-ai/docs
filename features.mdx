@@ -1,5 +1,5 @@
 ---
-title: 'Features overview'
+title: 'Features'
 description: 'Learn about the capabilities of Descriptor.AI'
 ---
 
@@ -55,41 +55,21 @@ Transform customer interactions with enterprise-grade analytics:
 
 Our enterprise-ready solution transforms conversations into actionable business intelligence while maintaining ethical boundaries and realistic expectations.
 
+<Info>
+Due to the high volume of requests, currently we only support batch processing. 
+Bulk processing will be available soon.
+</Info>
 ## Getting started
 <AccordionGroup>
 <Accordion title="API">
-<Info>
+<Note>
   **Prerequisite**: Please verify amount of channels in the audio file before proceeding.
-</Info>
-### Step 1. Once obtained your API key, you can start using the API by following the [Quickstart Guide](/quickstart).
+</Note>
+### Once obtained your API key, you can start using the API by following the [Quickstart Guide](/quickstart).
 
-1. Send a POST request with **audio file link** and **corresponding configuration** in JSON.
-2. Use the **result_id** from the response to fetch results.
-3. _Optional_: Configure a **webhook** to receive the results.
+To get the most out of our API, please refer to the [Understanding Insights & Metrics](#understanding-insights--metrics) section.
 
-Sample request body:
-<CodeGroup>
-
-```json
-{
-  "config": {
-    "language_code": "en-US",
-    "transcript_model": "descriptor-default",
-    "emotions_model": null,
-    "channels": 2,
-    "insights": {"summary": {}, "topics": {}, "labeling": {"categories": ["common questions", "access issues", "email update", "other"], "provider": "azure"}},
-    "metrics": ["speech"]
-  },
-  "audio": {
-    "uri": "https://example.com/audio.wav"
-  }
-  "webhook": "https://example.com/webhook_handler"
-}
-```
-
-</CodeGroup>
-
-### Step 2. Parameters and Configuration
+### Parameters and Configuration
 
 `language_code`: Language for ASR (e.g., en-US).
 
@@ -111,22 +91,6 @@ Sample request body:
 
 `webhook`: URL to receive completed data.
 
-
-### Step 3. Retrieving Results
-
-Once the audio analysis is complete, you can retrieve the results using the unique **result_id** provided in the initial response. 
-To access the analysis result in JSON format, make a GET request to the [following endpoint](api-reference/endpoint/get).
-
-```
-curl -X 'GET' \
-  'https://demo.descriptor.ai/api/v1/offline/processing/{result_id}' \
-  -H 'accept: application/json' \
-  -H 'Authorization: Bearer YOUR_ACCESS_TOKEN'
-```
-
-<Note>
-Replace `{result_id}` with the actual ID received in the response when you submitted the audio file for processing.
-</Note>
 
 ### Step 4. Response Overview
 
