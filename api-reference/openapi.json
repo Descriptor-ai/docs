@@ -2763,12 +2763,25 @@
             "default": 1
           },
           "insights": {
-            "additionalProperties": {
-              "$ref": "#/components/schemas/LLMConfig"
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "agent-actions",
+                "csat",
+                "customer-requests",
+                "division",
+                "emotional-score",
+                "keywords",
+                "labeling",
+                "problems",
+                "questions",
+                "summary",
+                "topics"
+              ]
             },
-            "type": "object",
-            "title": "Insights",
-            "default": {}
+            "description": "List of insights to generate from the audio analysis",
+            "default": []
           },
           "metrics": {
             "items": {
