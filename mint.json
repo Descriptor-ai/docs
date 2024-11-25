@@ -92,6 +92,12 @@
       "pages": [
         "api-reference/get-available-options"
       ]
+    },
+    {
+      "group": "Integrations",
+      "pages": [
+        "salesforce-integration"
+      ]
     }
   ],
   "footerSocials": {
