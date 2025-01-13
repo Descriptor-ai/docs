@@ -12,7 +12,7 @@
           "Processing"
         ],
         "summary": "Analyze Single File",
-        "description": "For the best results, use audio files with a sample rate of 16 kHz and 16 bits per sample.",
+        "description": "This endpoint accepts analysis config and a link to the audio file, returning the `result_id`.\nUse the `/processing/{result_id}` handle to fetch an actual result.\nFor best results, use audio files with a sample rate of 16 kHz and 16 bits per sample.",
         "operationId": "analyze_single_file",
         "requestBody": {
           "content": {
@@ -84,35 +84,47 @@
               }
             }
           },
-          "400": {
+          "422": {
+            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
+                  "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
-            },
-            "description": "Bad Request"
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/agent-actions": {
+      "post": {
+        "tags": [
+          "NLU"
+        ],
+        "summary": "Agent Actions",
+        "description": "List actions that agent accomplished during the call",
+        "operationId": "agent_actions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_agent_actions"
+              }
+            }
           },
-          "404": {
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
+                  "$ref": "#/components/schemas/TextInsightsModel"
                 }
               }
-            },
-            "description": "Not Found"
-          },
-          "425": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                }
-              }
-            },
-            "description": "Too Early"
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -127,10 +139,452 @@
         }
       }
     },
-    "/api/v1/insights/emotional-score": {
+    "/api/v1/insights/csat": {
       "post": {
         "tags": [
           "NLU"
+        ],
+        "summary": "Csat",
+        "description": "Customer Satisfaction Score",
+        "operationId": "csat",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_csat"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CsatModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/customer-requests": {
+      "post": {
+        "tags": [
+          "NLU"
+        ],
+        "summary": "Customer Requests",
+        "description": "List phrases where customer asks agent to do something",
+        "operationId": "customer_requests",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_customer_requests"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextInsightsModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/division": {
+      "post": {
+        "tags": [
+          "NLU"
+        ],
+        "summary": "Division",
+        "description": "Divide conversation to intro, negatiation, outro",
+        "operationId": "division",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_division"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DivisionModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/keywords": {
+      "post": {
+        "tags": [
+          "NLU"
+        ],
+        "summary": "Keywords",
+        "description": "Extract main keywords of the call",
+        "operationId": "keywords",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_keywords"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RootModel_list_Keyword__"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/label": {
+      "post": {
+        "tags": [
+          "NLU"
+        ],
+        "summary": "Label",
+        "description": "Add label to the call",
+        "operationId": "label",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_label"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextInsightsModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/problems": {
+      "post": {
+        "tags": [
+          "NLU"
+        ],
+        "summary": "Problems",
+        "description": "List the discussed problems from the transcript",
+        "operationId": "problems",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_problems"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemsModel-Output"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/questions": {
+      "post": {
+        "tags": [
+          "NLU"
+        ],
+        "summary": "Questions",
+        "description": "Find all phrases containing questions that customer asked",
+        "operationId": "questions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_questions"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextInsightsModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/sentiment": {
+      "post": {
+        "tags": [
+          "NLU"
+        ],
+        "summary": "Sentiment",
+        "description": "Add sentiment to the call",
+        "operationId": "sentiment",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_sentiment"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SentimentModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/summary": {
+      "post": {
+        "tags": [
+          "NLU"
+        ],
+        "summary": "Summary",
+        "description": "Convert transcript into a summary of the call",
+        "operationId": "summary",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_summary"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextInsightsModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/insights/topics": {
+      "post": {
+        "tags": [
+          "NLU"
+        ],
+        "summary": "Topics",
+        "description": "Extract main topics of the call",
+        "operationId": "topics",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_topics"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TextInsightsModel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/options": {
+      "get": {
+        "tags": [
+          "Options"
+        ],
+        "summary": "Get Available Options",
+        "description": "Get all available options for the recognition config",
+        "operationId": "get_available_options",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Config"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/metrics/emotional-score": {
+      "post": {
+        "tags": [
+          "Metrics"
         ],
         "summary": "Emo Score",
         "description": "Calculate emotional score of the call",
@@ -166,491 +620,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/keywords": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Keywords",
-        "description": "Extract main keywords of the call",
-        "operationId": "keywords",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Keywords"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/KeywordsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/agent-actions": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Agent Actions",
-        "description": "List actions that agent accomplished during the call",
-        "operationId": "agent_actions",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AgentActions"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InsightsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/customer-requests": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Customer Requests",
-        "description": "List phrases where customer asks agent to do something",
-        "operationId": "customer_requests",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CustomerRequests"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InsightsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/problems": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Problems",
-        "description": "List the discussed problems from the transcript",
-        "operationId": "problems",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Problems"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemsModel-Output"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/division": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Division",
-        "description": "Divide conversation to intro, negatiation, outro",
-        "operationId": "division",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Division"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DivisionModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/questions": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Questions",
-        "description": "Find all phrases containing questions that customer asked",
-        "operationId": "questions",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Questions"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InsightsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/summary": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Summary",
-        "description": "Convert transcript into a summary of the call",
-        "operationId": "summary",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Summary"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InsightsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/topics": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Topics",
-        "description": "Extract main topics of the call",
-        "operationId": "topics",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Topics"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InsightsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/labeling": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Labeling",
-        "description": "Add label to the call",
-        "operationId": "labeling",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Labeling"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/InsightsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/sentiment": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Sentiment",
-        "description": "Add sentiment to the call",
-        "operationId": "sentiment",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Sentiment"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SentimentModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/csat": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "CSAT",
-        "description": "Customer Satisfaction Rate",
-        "operationId": "csat",
-        "parameters": [
-          {
-            "name": "text",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Text"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CsatModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/options": {
-      "get": {
-        "tags": [
-          "Options"
-        ],
-        "summary": "Get Available Options",
-        "description": "Get all available options for the recognition config",
-        "operationId": "get_available_options",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config"
                 }
               }
             }
@@ -722,7 +691,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+
+                }
               }
             }
           },
@@ -744,9 +715,6 @@
     "schemas": {
       "AgentActions": {
         "properties": {
-          "config": {
-            "$ref": "#/components/schemas/LLMConfig"
-          },
           "transcript": {
             "items": {
               "$ref": "#/components/schemas/FinalTranscript"
@@ -766,16 +734,317 @@
               "it-IT"
             ],
             "title": "Language"
+          },
+          "prompt_customization": {
+            "type": "string",
+            "title": "Prompt Customization",
+            "default": ""
           }
         },
         "type": "object",
         "required": [
-          "config",
           "transcript",
           "language"
         ],
         "title": "AgentActions",
         "description": "Find all actions that agent accomplished during the call"
+      },
+      "Body_agent_actions": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "azure",
+              "claude",
+              "descriptor",
+              "openai"
+            ],
+            "title": "Provider"
+          },
+          "provider_config": {
+            "$ref": "#/components/schemas/ProviderConfig"
+          },
+          "data": {
+            "$ref": "#/components/schemas/AgentActions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provider_config",
+          "data"
+        ],
+        "title": "Body_agent_actions"
+      },
+      "Body_csat": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "azure",
+              "claude",
+              "descriptor",
+              "openai"
+            ],
+            "title": "Provider"
+          },
+          "provider_config": {
+            "$ref": "#/components/schemas/ProviderConfig"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Csat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provider_config",
+          "data"
+        ],
+        "title": "Body_csat"
+      },
+      "Body_customer_requests": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "azure",
+              "claude",
+              "descriptor",
+              "openai"
+            ],
+            "title": "Provider"
+          },
+          "provider_config": {
+            "$ref": "#/components/schemas/ProviderConfig"
+          },
+          "data": {
+            "$ref": "#/components/schemas/CustomerRequests"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provider_config",
+          "data"
+        ],
+        "title": "Body_customer_requests"
+      },
+      "Body_division": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "azure",
+              "claude",
+              "descriptor",
+              "openai"
+            ],
+            "title": "Provider"
+          },
+          "provider_config": {
+            "$ref": "#/components/schemas/ProviderConfig"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Division"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provider_config",
+          "data"
+        ],
+        "title": "Body_division"
+      },
+      "Body_keywords": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "azure",
+              "claude",
+              "descriptor",
+              "openai"
+            ],
+            "title": "Provider"
+          },
+          "provider_config": {
+            "$ref": "#/components/schemas/ProviderConfig"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Keywords"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provider_config",
+          "data"
+        ],
+        "title": "Body_keywords"
+      },
+      "Body_label": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "azure",
+              "claude",
+              "descriptor",
+              "openai"
+            ],
+            "title": "Provider"
+          },
+          "provider_config": {
+            "$ref": "#/components/schemas/ProviderConfig"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Label"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provider_config",
+          "data"
+        ],
+        "title": "Body_label"
+      },
+      "Body_problems": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "azure",
+              "claude",
+              "descriptor",
+              "openai"
+            ],
+            "title": "Provider"
+          },
+          "provider_config": {
+            "$ref": "#/components/schemas/ProviderConfig"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Problems"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provider_config",
+          "data"
+        ],
+        "title": "Body_problems"
+      },
+      "Body_questions": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "azure",
+              "claude",
+              "descriptor",
+              "openai"
+            ],
+            "title": "Provider"
+          },
+          "provider_config": {
+            "$ref": "#/components/schemas/ProviderConfig"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Questions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provider_config",
+          "data"
+        ],
+        "title": "Body_questions"
+      },
+      "Body_sentiment": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "azure",
+              "claude",
+              "descriptor",
+              "openai"
+            ],
+            "title": "Provider"
+          },
+          "provider_config": {
+            "$ref": "#/components/schemas/ProviderConfig"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Sentiment"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provider_config",
+          "data"
+        ],
+        "title": "Body_sentiment"
+      },
+      "Body_summary": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "azure",
+              "claude",
+              "descriptor",
+              "openai"
+            ],
+            "title": "Provider"
+          },
+          "provider_config": {
+            "$ref": "#/components/schemas/ProviderConfig"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Summary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provider_config",
+          "data"
+        ],
+        "title": "Body_summary"
+      },
+      "Body_topics": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "enum": [
+              "azure",
+              "claude",
+              "descriptor",
+              "openai"
+            ],
+            "title": "Provider"
+          },
+          "provider_config": {
+            "$ref": "#/components/schemas/ProviderConfig"
+          },
+          "data": {
+            "$ref": "#/components/schemas/Topics"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "provider_config",
+          "data"
+        ],
+        "title": "Body_topics"
       },
       "Config": {
         "properties": {
@@ -783,19 +1052,15 @@
             "$ref": "#/components/schemas/RecognitionConfig",
             "default": {
               "language_code": "en-US",
-              "transcript_model": "descriptor-default",
+              "transcript_model": "openai_whisper",
               "emotions_model": "emotions",
               "emotions_alignment": false,
               "emotions_diarization": false,
-              "emotions_sentiment": false,
-              "sentiment_llm_provider": "azure",
-              "channels": 1,
-              "insights": {},
-              "metrics": [],
-              "mandatory_stages": [
-                "sentiment",
-                "insights"
-              ]
+              "channels": 2,
+              "insights": {
+
+              },
+              "metrics": []
             }
           },
           "options": {
@@ -811,30 +1076,23 @@
                 "it-IT"
               ],
               "transcript_model": [
-                "descriptor-default",
-                "descriptor-hebrew"
+                "openai_whisper"
               ],
               "emotions_model": [
                 "emotions",
-                null
-              ],
+                null],
               "insights": [
-                "agent-actions",
+                "agent_actions",
                 "csat",
-                "customer-requests",
+                "customer_requests",
                 "division",
-                "emotional-score",
                 "keywords",
-                "labeling",
+                "label",
                 "problems",
                 "questions",
+                "sentiment",
                 "summary",
                 "topics"
-              ],
-              "llm_providers": [
-                "azure",
-                "claude",
-                "openai"
               ],
               "metrics": [
                 "speech",
@@ -843,45 +1101,13 @@
                 "intervals"
               ]
             }
-          },
-          "llm_provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "openai"
-            ],
-            "title": "Llm Provider",
-            "default": "azure"
           }
         },
         "type": "object",
         "title": "Config"
       },
-      "CsatModel": {
+      "Csat": {
         "properties": {
-          "csat": {
-            "type": "number",
-            "title": "Csat"
-          },
-          "reason": {
-            "type": "string",
-            "title": "Reason"
-          }
-        },
-        "type": "object",
-        "required": [
-          "csat",
-          "reason"
-        ],
-        "title": "CsatModel",
-        "description": "Model representing sentiment analysis results."
-      },
-      "CustomerRequests": {
-        "properties": {
-          "config": {
-            "$ref": "#/components/schemas/LLMConfig"
-          },
           "transcript": {
             "items": {
               "$ref": "#/components/schemas/FinalTranscript"
@@ -901,11 +1127,71 @@
               "it-IT"
             ],
             "title": "Language"
+          },
+          "prompt_customization": {
+            "type": "string",
+            "title": "Prompt Customization",
+            "default": ""
           }
         },
         "type": "object",
         "required": [
-          "config",
+          "transcript",
+          "language"
+        ],
+        "title": "Csat"
+      },
+      "CsatModel": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "csat": {
+            "type": "number",
+            "maximum": 5,
+            "minimum": 1,
+            "title": "Csat"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason",
+          "csat"
+        ],
+        "title": "CsatModel",
+        "description": "Model representing sentiment analysis results."
+      },
+      "CustomerRequests": {
+        "properties": {
+          "transcript": {
+            "items": {
+              "$ref": "#/components/schemas/FinalTranscript"
+            },
+            "type": "array",
+            "title": "Transcript"
+          },
+          "language": {
+            "type": "string",
+            "enum": [
+              "en-US",
+              "he-IL",
+              "hi-IN",
+              "es-ES",
+              "fr-FR",
+              "de-DE",
+              "it-IT"
+            ],
+            "title": "Language"
+          },
+          "prompt_customization": {
+            "type": "string",
+            "title": "Prompt Customization",
+            "default": ""
+          }
+        },
+        "type": "object",
+        "required": [
           "transcript",
           "language"
         ],
@@ -914,9 +1200,6 @@
       },
       "Division": {
         "properties": {
-          "config": {
-            "$ref": "#/components/schemas/LLMConfig"
-          },
           "transcript": {
             "items": {
               "$ref": "#/components/schemas/FinalTranscript"
@@ -936,11 +1219,15 @@
               "it-IT"
             ],
             "title": "Language"
+          },
+          "prompt_customization": {
+            "type": "string",
+            "title": "Prompt Customization",
+            "default": ""
           }
         },
         "type": "object",
         "required": [
-          "config",
           "transcript",
           "language"
         ],
@@ -1004,8 +1291,8 @@
         "properties": {
           "result": {
             "type": "number",
-            "maximum": 10.0,
-            "minimum": 0.0,
+            "maximum": 1,
+            "minimum": 0,
             "title": "Result"
           }
         },
@@ -1015,20 +1302,6 @@
         ],
         "title": "EmotionalScore",
         "description": "Emoional response score"
-      },
-      "ErrorModel": {
-        "properties": {
-          "detail": {
-            "type": "string",
-            "title": "Detail"
-          }
-        },
-        "type": "object",
-        "required": [
-          "detail"
-        ],
-        "title": "ErrorModel",
-        "description": "Error response"
       },
       "FinalTranscript": {
         "properties": {
@@ -1044,30 +1317,10 @@
             "type": "number",
             "title": "End"
           },
-          "words": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Word"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Words"
-          },
           "speaker": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Speaker"
+            "type": "integer",
+            "title": "Speaker",
+            "default": 0
           },
           "emotion": {
             "anyOf": [
@@ -1101,7 +1354,16 @@
           "end"
         ],
         "title": "FinalTranscript",
-        "description": "Final Transcript"
+        "description": "Final Transcript",
+        "examples": [
+          {
+            "emotion": "friendly",
+            "end": 12,
+            "speaker": 0,
+            "start": 0,
+            "text": "Hello! How can I help you?"
+          }
+        ]
       },
       "FinalTranscriptWithEmotions": {
         "properties": {
@@ -1117,30 +1379,10 @@
             "type": "number",
             "title": "End"
           },
-          "words": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Word"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Words"
-          },
           "speaker": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Speaker"
+            "type": "integer",
+            "title": "Speaker",
+            "default": 0
           },
           "emotion": {
             "type": "string",
@@ -1167,7 +1409,16 @@
           "end",
           "emotion"
         ],
-        "title": "FinalTranscriptWithEmotions"
+        "title": "FinalTranscriptWithEmotions",
+        "examples": [
+          {
+            "emotion": "friendly",
+            "end": 12,
+            "speaker": 0,
+            "start": 0,
+            "text": "Hello! How can I help you?"
+          }
+        ]
       },
       "HTTPValidationError": {
         "properties": {
@@ -1182,20 +1433,24 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
-      "InsightsModel": {
-        "items": {
-          "type": "string"
+      "InsightOptions": {
+        "properties": {
+          "prompt_customization": {
+            "type": "string",
+            "title": "Prompt Customization",
+            "default": ""
+          }
         },
-        "type": "array",
-        "title": "InsightsModel",
-        "description": "Detected insights in the transcript"
+        "additionalProperties": true,
+        "type": "object",
+        "title": "InsightOptions"
       },
       "InsightsResultModel-Input": {
         "properties": {
-          "agent-actions": {
+          "agent_actions": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/InsightsModel"
+                "$ref": "#/components/schemas/TextInsightsModel"
               },
               {
                 "type": "null"
@@ -1212,10 +1467,10 @@
               }
             ]
           },
-          "customer-requests": {
+          "customer_requests": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/InsightsModel"
+                "$ref": "#/components/schemas/TextInsightsModel"
               },
               {
                 "type": "null"
@@ -1232,16 +1487,6 @@
               }
             ]
           },
-          "emotional-score": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/EmotionalScore"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
           "keywords": {
             "anyOf": [
               {
@@ -1252,10 +1497,10 @@
               }
             ]
           },
-          "labeling": {
+          "label": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/InsightsModel"
+                "$ref": "#/components/schemas/TextInsightsModel"
               },
               {
                 "type": "null"
@@ -1275,17 +1520,31 @@
           "questions": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/InsightsModel"
+                "$ref": "#/components/schemas/TextInsightsModel"
               },
               {
                 "type": "null"
               }
             ]
           },
+          "sentiment": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FinalTranscript"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentiment"
+          },
           "summary": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/InsightsModel"
+                "$ref": "#/components/schemas/TextInsightsModel"
               },
               {
                 "type": "null"
@@ -1295,7 +1554,7 @@
           "topics": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/InsightsModel"
+                "$ref": "#/components/schemas/TextInsightsModel"
               },
               {
                 "type": "null"
@@ -1308,10 +1567,10 @@
       },
       "InsightsResultModel-Output": {
         "properties": {
-          "agent-actions": {
+          "agent_actions": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/InsightsModel"
+                "$ref": "#/components/schemas/TextInsightsModel"
               },
               {
                 "type": "null"
@@ -1328,10 +1587,10 @@
               }
             ]
           },
-          "customer-requests": {
+          "customer_requests": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/InsightsModel"
+                "$ref": "#/components/schemas/TextInsightsModel"
               },
               {
                 "type": "null"
@@ -1348,16 +1607,6 @@
               }
             ]
           },
-          "emotional-score": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/EmotionalScore"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
           "keywords": {
             "anyOf": [
               {
@@ -1368,10 +1617,10 @@
               }
             ]
           },
-          "labeling": {
+          "label": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/InsightsModel"
+                "$ref": "#/components/schemas/TextInsightsModel"
               },
               {
                 "type": "null"
@@ -1391,17 +1640,31 @@
           "questions": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/InsightsModel"
+                "$ref": "#/components/schemas/TextInsightsModel"
               },
               {
                 "type": "null"
               }
             ]
           },
+          "sentiment": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/FinalTranscript"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sentiment"
+          },
           "summary": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/InsightsModel"
+                "$ref": "#/components/schemas/TextInsightsModel"
               },
               {
                 "type": "null"
@@ -1411,7 +1674,7 @@
           "topics": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/InsightsModel"
+                "$ref": "#/components/schemas/TextInsightsModel"
               },
               {
                 "type": "null"
@@ -1508,7 +1771,7 @@
                 "type": "null"
               }
             ],
-            "title": "CSAT Rate"
+            "title": "Csat Rate"
           },
           "dsat": {
             "anyOf": [
@@ -1597,6 +1860,21 @@
                       }
                     ]
                   },
+                  "propertyNames": {
+                    "enum": [
+                      "angry",
+                      "cautious",
+                      "cheerful",
+                      "friendly",
+                      "frustrated",
+                      "impatient",
+                      "neutral",
+                      "stressed",
+                      "surprised",
+                      "thankful",
+                      "fear"
+                    ]
+                  },
                   "type": "object"
                 },
                 "type": "object"
@@ -1613,9 +1891,9 @@
       },
       "Keyword": {
         "properties": {
-          "word": {
+          "keyword": {
             "type": "string",
-            "title": "Word"
+            "title": "Keyword"
           },
           "emotion": {
             "type": "string",
@@ -1641,7 +1919,7 @@
         },
         "type": "object",
         "required": [
-          "word",
+          "keyword",
           "emotion",
           "count"
         ],
@@ -1649,9 +1927,6 @@
       },
       "Keywords": {
         "properties": {
-          "config": {
-            "$ref": "#/components/schemas/LLMConfig"
-          },
           "transcript": {
             "items": {
               "$ref": "#/components/schemas/FinalTranscript"
@@ -1671,11 +1946,15 @@
               "it-IT"
             ],
             "title": "Language"
+          },
+          "prompt_customization": {
+            "type": "string",
+            "title": "Prompt Customization",
+            "default": ""
           }
         },
         "type": "object",
         "required": [
-          "config",
           "transcript",
           "language"
         ],
@@ -1690,44 +1969,8 @@
         "title": "KeywordsModel",
         "description": "Detected keywords in the transcript"
       },
-      "LLMConfig": {
+      "Label": {
         "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "openai"
-            ],
-            "title": "Provider",
-            "default": "azure"
-          },
-          "model": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Model"
-          },
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "title": "LLMConfig"
-      },
-      "Labeling": {
-        "properties": {
-          "config": {
-            "$ref": "#/components/schemas/LabelingConfig"
-          },
           "transcript": {
             "items": {
               "$ref": "#/components/schemas/FinalTranscript"
@@ -1747,63 +1990,30 @@
               "it-IT"
             ],
             "title": "Language"
-          }
-        },
-        "type": "object",
-        "required": [
-          "config",
-          "transcript",
-          "language"
-        ],
-        "title": "Labeling",
-        "description": "Add label to the call"
-      },
-      "LabelingConfig": {
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "openai"
-            ],
-            "title": "Provider",
-            "default": "azure"
-          },
-          "model": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Model"
           },
           "prompt_customization": {
             "type": "string",
             "title": "Prompt Customization",
             "default": ""
           },
-          "categories": {
+          "labels": {
             "items": {
               "type": "string"
             },
             "type": "array",
-            "title": "Categories",
+            "title": "Labels",
             "default": [
-              "access issue",
-              "contacts update",
-              "connectivity issue",
-              "account management",
               "other"
             ]
           }
         },
-        "additionalProperties": true,
         "type": "object",
-        "title": "LabelingConfig"
+        "required": [
+          "transcript",
+          "language"
+        ],
+        "title": "Label",
+        "description": "Add label to the call"
       },
       "MetricsModel-Input": {
         "properties": {
@@ -1978,6 +2188,21 @@
                       {
                         "type": "null"
                       }
+                    ]
+                  },
+                  "propertyNames": {
+                    "enum": [
+                      "angry",
+                      "cautious",
+                      "cheerful",
+                      "friendly",
+                      "frustrated",
+                      "impatient",
+                      "neutral",
+                      "stressed",
+                      "surprised",
+                      "thankful",
+                      "fear"
                     ]
                   },
                   "type": "object"
@@ -2194,6 +2419,21 @@
                       }
                     ]
                   },
+                  "propertyNames": {
+                    "enum": [
+                      "angry",
+                      "cautious",
+                      "cheerful",
+                      "friendly",
+                      "frustrated",
+                      "impatient",
+                      "neutral",
+                      "stressed",
+                      "surprised",
+                      "thankful",
+                      "fear"
+                    ]
+                  },
                   "type": "object"
                 },
                 "type": "object"
@@ -2262,6 +2502,16 @@
               }
             ],
             "title": "Intervals"
+          },
+          "emotional_score": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EmotionalScore"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -2296,6 +2546,16 @@
               }
             ],
             "title": "Intervals"
+          },
+          "emotional_score": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/EmotionalScore"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -2336,10 +2596,7 @@
             "prefixItems": [
               {
                 "type": "string",
-                "enum": [
-                  "descriptor-default",
-                  "descriptor-hebrew"
-                ]
+                "const": "openai_whisper"
               }
             ],
             "type": "array",
@@ -2347,8 +2604,7 @@
             "minItems": 1,
             "title": "Transcript Model",
             "default": [
-              "descriptor-default",
-              "descriptor-hebrew"
+              "openai_whisper"
             ]
           },
           "emotions_model": {
@@ -2356,8 +2612,7 @@
               {
                 "enum": [
                   "emotions",
-                  null
-                ]
+                  null]
               }
             ],
             "type": "array",
@@ -2366,23 +2621,22 @@
             "title": "Emotions Model",
             "default": [
               "emotions",
-              null
-            ]
+              null]
           },
           "insights": {
             "prefixItems": [
               {
                 "type": "string",
                 "enum": [
-                  "agent-actions",
+                  "agent_actions",
                   "csat",
-                  "customer-requests",
+                  "customer_requests",
                   "division",
-                  "emotional-score",
                   "keywords",
-                  "labeling",
+                  "label",
                   "problems",
                   "questions",
+                  "sentiment",
                   "summary",
                   "topics"
                 ]
@@ -2393,38 +2647,17 @@
             "minItems": 1,
             "title": "Insights",
             "default": [
-              "agent-actions",
+              "agent_actions",
               "csat",
-              "customer-requests",
+              "customer_requests",
               "division",
-              "emotional-score",
               "keywords",
-              "labeling",
+              "label",
               "problems",
               "questions",
+              "sentiment",
               "summary",
               "topics"
-            ]
-          },
-          "llm_providers": {
-            "prefixItems": [
-              {
-                "type": "string",
-                "enum": [
-                  "azure",
-                  "claude",
-                  "openai"
-                ]
-              }
-            ],
-            "type": "array",
-            "maxItems": 1,
-            "minItems": 1,
-            "title": "Llm Providers",
-            "default": [
-              "azure",
-              "claude",
-              "openai"
             ]
           },
           "metrics": {
@@ -2464,7 +2697,9 @@
           },
           "call_data": {
             "$ref": "#/components/schemas/RecognitionMeta",
-            "default": {}
+            "default": {
+
+            }
           }
         },
         "type": "object",
@@ -2489,26 +2724,23 @@
             "title": "End"
           },
           "speaker_id": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
+            "type": "integer",
             "title": "Speaker Id"
           },
           "solved": {
+            "type": "boolean",
+            "title": "Solved"
+          },
+          "resolution_summary": {
             "anyOf": [
               {
-                "type": "boolean"
+                "type": "string"
               },
               {
                 "type": "null"
               }
             ],
-            "title": "Solved"
+            "title": "Resolution Summary"
           },
           "solution_start": {
             "anyOf": [
@@ -2531,17 +2763,6 @@
               }
             ],
             "title": "Solution End"
-          },
-          "resolution_summary": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resolution Summary"
           },
           "solving_time": {
             "anyOf": [
@@ -2570,7 +2791,14 @@
         "required": [
           "problem_source",
           "start",
-          "end"
+          "end",
+          "speaker_id",
+          "solved",
+          "resolution_summary",
+          "solution_start",
+          "solution_end",
+          "solving_time",
+          "solving_time_ratio"
         ],
         "title": "ProblemItem"
       },
@@ -2597,9 +2825,6 @@
       },
       "Problems": {
         "properties": {
-          "config": {
-            "$ref": "#/components/schemas/LLMConfig"
-          },
           "transcript": {
             "items": {
               "$ref": "#/components/schemas/FinalTranscript"
@@ -2619,11 +2844,15 @@
               "it-IT"
             ],
             "title": "Language"
+          },
+          "prompt_customization": {
+            "type": "string",
+            "title": "Prompt Customization",
+            "default": ""
           }
         },
         "type": "object",
         "required": [
-          "config",
           "transcript",
           "language"
         ],
@@ -2646,11 +2875,47 @@
         "title": "ProblemsModel",
         "description": "Converstion Problems with additional data"
       },
+      "ProviderConfig": {
+        "properties": {
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "method": {
+            "type": "string",
+            "enum": [
+              "chat",
+              "completion"
+            ],
+            "title": "Method",
+            "default": "chat"
+          },
+          "max_attempts": {
+            "type": "integer",
+            "maximum": 10,
+            "minimum": 1,
+            "title": "Max Attempts",
+            "default": 1
+          }
+        },
+        "type": "object",
+        "title": "ProviderConfig",
+        "examples": [
+          {
+            "max_attempts": 1,
+            "method": "chat"
+          }
+        ]
+      },
       "Questions": {
         "properties": {
-          "config": {
-            "$ref": "#/components/schemas/LLMConfig"
-          },
           "transcript": {
             "items": {
               "$ref": "#/components/schemas/FinalTranscript"
@@ -2670,11 +2935,15 @@
               "it-IT"
             ],
             "title": "Language"
+          },
+          "prompt_customization": {
+            "type": "string",
+            "title": "Prompt Customization",
+            "default": ""
           }
         },
         "type": "object",
         "required": [
-          "config",
           "transcript",
           "language"
         ],
@@ -2715,11 +2984,10 @@
           "transcript_model": {
             "type": "string",
             "enum": [
-              "descriptor-default",
-              "descriptor-hebrew"
+              "openai_whisper"
             ],
             "title": "Transcript Model",
-            "default": "descriptor-default"
+            "default": "openai_whisper"
           },
           "emotions_model": {
             "type": "string",
@@ -2740,47 +3008,33 @@
             "title": "Emotions Diarization",
             "default": false
           },
-          "emotions_sentiment": {
-            "type": "boolean",
-            "title": "Emotions Sentiment",
-            "default": false
-          },
-          "sentiment_llm_provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "openai"
-            ],
-            "title": "Sentiment Llm Provider",
-            "default": "azure"
-          },
           "channels": {
             "type": "integer",
-            "maximum": 8.0,
-            "minimum": 1.0,
+            "maximum": 8,
+            "minimum": 1,
             "title": "Channels",
-            "default": 1
+            "default": 2
           },
           "insights": {
             "type": "array",
             "items": {
               "type": "string",
               "enum": [
-                "agent-actions",
+                "agent_actions",
                 "csat",
-                "customer-requests",
+                "customer_requests", 
                 "division",
-                "emotional-score",
                 "keywords",
-                "labeling",
+                "label",
                 "problems",
                 "questions",
+                "sentiment",
                 "summary",
                 "topics"
               ]
             },
-            "description": "List of insights to generate from the audio analysis",
+            "uniqueItems": true,
+            "title": "Insights",
             "default": []
           },
           "metrics": {
@@ -2794,6 +3048,7 @@
               ]
             },
             "type": "array",
+            "uniqueItems": true,
             "title": "Metrics",
             "default": []
           },
@@ -2810,34 +3065,6 @@
               }
             ],
             "title": "Webhook"
-          },
-          "mandatory_stages": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "string",
-                  "enum": [
-                    "transcribe",
-                    "call_webhook",
-                    "emotions",
-                    "gather",
-                    "insights",
-                    "store",
-                    "metrics",
-                    "sentiment"
-                  ]
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Mandatory Stages",
-            "default": [
-              "sentiment",
-              "insights"
-            ]
           }
         },
         "type": "object",
@@ -2899,19 +3126,6 @@
             "type": "array",
             "title": "Transcript"
           },
-          "language_code": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language Code"
-          },
           "config": {
             "$ref": "#/components/schemas/RecognitionConfig"
           },
@@ -2930,20 +3144,6 @@
                 "type": "null"
               }
             ]
-          },
-          "transcript_sentiment": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/FinalTranscript"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Transcript Sentiment"
           },
           "emotions_alignment": {
             "anyOf": [
@@ -3000,10 +3200,7 @@
           "failed": {
             "anyOf": [
               {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
+                "type": "object"
               },
               {
                 "type": "null"
@@ -3016,7 +3213,6 @@
         "required": [
           "job_id",
           "transcript",
-          "language_code",
           "config",
           "audio",
           "call_data"
@@ -3036,19 +3232,6 @@
             "type": "array",
             "title": "Transcript"
           },
-          "language_code": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language Code"
-          },
           "config": {
             "$ref": "#/components/schemas/RecognitionConfig"
           },
@@ -3067,20 +3250,6 @@
                 "type": "null"
               }
             ]
-          },
-          "transcript_sentiment": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/FinalTranscript"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Transcript Sentiment"
           },
           "emotions_alignment": {
             "anyOf": [
@@ -3137,10 +3306,7 @@
           "failed": {
             "anyOf": [
               {
-                "items": {
-                  "type": "string"
-                },
-                "type": "array"
+                "type": "object"
               },
               {
                 "type": "null"
@@ -3153,7 +3319,6 @@
         "required": [
           "job_id",
           "transcript",
-          "language_code",
           "config",
           "audio",
           "call_data"
@@ -3173,11 +3338,15 @@
         ],
         "title": "ResultId"
       },
+      "RootModel_list_Keyword__": {
+        "items": {
+          "$ref": "#/components/schemas/Keyword"
+        },
+        "type": "array",
+        "title": "RootModel[list[Keyword]]"
+      },
       "Sentiment": {
         "properties": {
-          "config": {
-            "$ref": "#/components/schemas/LLMConfig"
-          },
           "transcript": {
             "items": {
               "$ref": "#/components/schemas/FinalTranscript"
@@ -3197,11 +3366,15 @@
               "it-IT"
             ],
             "title": "Language"
+          },
+          "prompt_customization": {
+            "type": "string",
+            "title": "Prompt Customization",
+            "default": ""
           }
         },
         "type": "object",
         "required": [
-          "config",
           "transcript",
           "language"
         ],
@@ -3240,9 +3413,6 @@
       },
       "Summary": {
         "properties": {
-          "config": {
-            "$ref": "#/components/schemas/LLMConfig"
-          },
           "transcript": {
             "items": {
               "$ref": "#/components/schemas/FinalTranscript"
@@ -3262,22 +3432,28 @@
               "it-IT"
             ],
             "title": "Language"
+          },
+          "prompt_customization": {
+            "type": "string",
+            "title": "Prompt Customization",
+            "default": ""
           }
         },
         "type": "object",
         "required": [
-          "config",
           "transcript",
           "language"
         ],
         "title": "Summary",
         "description": "Convert call transcript into a summary of the call"
       },
+      "TextInsightsModel": {
+        "type": "string",
+        "title": "TextInsightsModel",
+        "description": "Plain text insights"
+      },
       "Topics": {
         "properties": {
-          "config": {
-            "$ref": "#/components/schemas/LLMConfig"
-          },
           "transcript": {
             "items": {
               "$ref": "#/components/schemas/FinalTranscript"
@@ -3297,11 +3473,15 @@
               "it-IT"
             ],
             "title": "Language"
+          },
+          "prompt_customization": {
+            "type": "string",
+            "title": "Prompt Customization",
+            "default": ""
           }
         },
         "type": "object",
         "required": [
-          "config",
           "transcript",
           "language"
         ],
@@ -3340,30 +3520,6 @@
           "type"
         ],
         "title": "ValidationError"
-      },
-      "Word": {
-        "properties": {
-          "text": {
-            "type": "string",
-            "title": "Text"
-          },
-          "start": {
-            "type": "number",
-            "title": "Start"
-          },
-          "end": {
-            "type": "number",
-            "title": "End"
-          }
-        },
-        "type": "object",
-        "required": [
-          "text",
-          "start",
-          "end"
-        ],
-        "title": "Word",
-        "description": "Partial Transcript"
       }
     },
     "securitySchemes": {
