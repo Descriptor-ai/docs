@@ -8,11 +8,9 @@
   "paths": {
     "/api/v1/offline/processing": {
       "post": {
-        "tags": [
-          "Processing"
-        ],
+        "tags": ["Processing"],
         "summary": "Analyze Single File",
-        "description": "This endpoint accepts analysis config and a link to the audio file, returning the `result_id`.\nUse the `/processing/{result_id}` handle to fetch an actual result.\nFor best results, use audio files with a sample rate of 16 kHz and 16 bits per sample.",
+        "description": "For the best results, use audio files with a sample rate of 16 kHz and 16 bits per sample.",
         "operationId": "analyze_single_file",
         "requestBody": {
           "content": {
@@ -55,11 +53,9 @@
     },
     "/api/v1/offline/processing/{result_id}": {
       "get": {
-        "tags": [
-          "Processing"
-        ],
+        "tags": ["Processing"],
         "summary": "Get Analysis Result",
-        "description": "This endpoint accepts a `result_id` parameter and returns the analysis results.",
+        "description": "Retrieve the analysis results for a given result_id",
         "operationId": "get_analysis_result",
         "parameters": [
           {
@@ -67,9 +63,7 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string",
-              "format": "uuid4",
-              "title": "Result Id"
+              "type": "string"
             }
           }
         ],
@@ -79,2615 +73,56 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Result-Output"
+                  "$ref": "#/components/schemas/Result"
                 }
               }
             }
           },
-          "422": {
-            "description": "Validation Error",
+          "400": {
+            "description": "Bad Request",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
+                }
+              }
+            }
+          },
+          "425": {
+            "description": "Too Early",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorModel"
                 }
               }
             }
           }
-        }
-      }
-    },
-    "/api/v1/insights/agent-actions": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Agent Actions",
-        "description": "List actions that agent accomplished during the call",
-        "operationId": "agent_actions",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_agent_actions"
-              }
-            }
-          },
-          "required": true
         },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TextInsightsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
+        "security": [
+          {
+            "HTTPBearer": []
           }
-        }
-      }
-    },
-    "/api/v1/insights/csat": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Csat",
-        "description": "Customer Satisfaction Score",
-        "operationId": "csat",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_csat"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CsatModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/customer-requests": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Customer Requests",
-        "description": "List phrases where customer asks agent to do something",
-        "operationId": "customer_requests",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_customer_requests"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TextInsightsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/division": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Division",
-        "description": "Divide conversation to intro, negatiation, outro",
-        "operationId": "division",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_division"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DivisionModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/keywords": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Keywords",
-        "description": "Extract main keywords of the call",
-        "operationId": "keywords",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_keywords"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/RootModel_list_Keyword__"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/label": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Label",
-        "description": "Add label to the call",
-        "operationId": "label",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_label"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TextInsightsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/problems": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Problems",
-        "description": "List the discussed problems from the transcript",
-        "operationId": "problems",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_problems"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemsModel-Output"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/questions": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Questions",
-        "description": "Find all phrases containing questions that customer asked",
-        "operationId": "questions",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_questions"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TextInsightsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/sentiment": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Sentiment",
-        "description": "Add sentiment to the call",
-        "operationId": "sentiment",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_sentiment"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SentimentModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/summary": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Summary",
-        "description": "Convert transcript into a summary of the call",
-        "operationId": "summary",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_summary"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TextInsightsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/insights/topics": {
-      "post": {
-        "tags": [
-          "NLU"
-        ],
-        "summary": "Topics",
-        "description": "Extract main topics of the call",
-        "operationId": "topics",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_topics"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TextInsightsModel"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/options": {
-      "get": {
-        "tags": [
-          "Options"
-        ],
-        "summary": "Get Available Options",
-        "description": "Get all available options for the recognition config",
-        "operationId": "get_available_options",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Config"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/metrics/emotional-score": {
-      "post": {
-        "tags": [
-          "Metrics"
-        ],
-        "summary": "Emo Score",
-        "description": "Calculate emotional score of the call",
-        "operationId": "emo_score",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "items": {
-                  "$ref": "#/components/schemas/FinalTranscript"
-                },
-                "type": "array",
-                "title": "Transcripts"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/EmotionalScore"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/metrics/calculate": {
-      "post": {
-        "tags": [
-          "Metrics"
-        ],
-        "summary": "Calculate Metrics",
-        "description": "Calculate metrics of the call",
-        "operationId": "calculate_metrics",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Result-Input"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MetricsRootModel-Output"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "processing-result": {
-      "post": {
-        "summary": "Processing Result",
-        "description": "When a processing result is ready we'll send you a POST request with this\ndata to the URL that you specified in processing request config.",
-        "operationId": "processing_resultprocessing_result_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Result-Input"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
+        ]
       }
     }
   },
   "components": {
     "schemas": {
-      "AgentActions": {
-        "properties": {
-          "transcript": {
-            "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
-            },
-            "type": "array",
-            "title": "Transcript"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language"
-          },
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "required": [
-          "transcript",
-          "language"
-        ],
-        "title": "AgentActions",
-        "description": "Find all actions that agent accomplished during the call"
-      },
-      "Body_agent_actions": {
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "descriptor",
-              "openai"
-            ],
-            "title": "Provider"
-          },
-          "provider_config": {
-            "$ref": "#/components/schemas/ProviderConfig"
-          },
-          "data": {
-            "$ref": "#/components/schemas/AgentActions"
-          }
-        },
-        "type": "object",
-        "required": [
-          "provider",
-          "provider_config",
-          "data"
-        ],
-        "title": "Body_agent_actions"
-      },
-      "Body_csat": {
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "descriptor",
-              "openai"
-            ],
-            "title": "Provider"
-          },
-          "provider_config": {
-            "$ref": "#/components/schemas/ProviderConfig"
-          },
-          "data": {
-            "$ref": "#/components/schemas/Csat"
-          }
-        },
-        "type": "object",
-        "required": [
-          "provider",
-          "provider_config",
-          "data"
-        ],
-        "title": "Body_csat"
-      },
-      "Body_customer_requests": {
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "descriptor",
-              "openai"
-            ],
-            "title": "Provider"
-          },
-          "provider_config": {
-            "$ref": "#/components/schemas/ProviderConfig"
-          },
-          "data": {
-            "$ref": "#/components/schemas/CustomerRequests"
-          }
-        },
-        "type": "object",
-        "required": [
-          "provider",
-          "provider_config",
-          "data"
-        ],
-        "title": "Body_customer_requests"
-      },
-      "Body_division": {
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "descriptor",
-              "openai"
-            ],
-            "title": "Provider"
-          },
-          "provider_config": {
-            "$ref": "#/components/schemas/ProviderConfig"
-          },
-          "data": {
-            "$ref": "#/components/schemas/Division"
-          }
-        },
-        "type": "object",
-        "required": [
-          "provider",
-          "provider_config",
-          "data"
-        ],
-        "title": "Body_division"
-      },
-      "Body_keywords": {
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "descriptor",
-              "openai"
-            ],
-            "title": "Provider"
-          },
-          "provider_config": {
-            "$ref": "#/components/schemas/ProviderConfig"
-          },
-          "data": {
-            "$ref": "#/components/schemas/Keywords"
-          }
-        },
-        "type": "object",
-        "required": [
-          "provider",
-          "provider_config",
-          "data"
-        ],
-        "title": "Body_keywords"
-      },
-      "Body_label": {
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "descriptor",
-              "openai"
-            ],
-            "title": "Provider"
-          },
-          "provider_config": {
-            "$ref": "#/components/schemas/ProviderConfig"
-          },
-          "data": {
-            "$ref": "#/components/schemas/Label"
-          }
-        },
-        "type": "object",
-        "required": [
-          "provider",
-          "provider_config",
-          "data"
-        ],
-        "title": "Body_label"
-      },
-      "Body_problems": {
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "descriptor",
-              "openai"
-            ],
-            "title": "Provider"
-          },
-          "provider_config": {
-            "$ref": "#/components/schemas/ProviderConfig"
-          },
-          "data": {
-            "$ref": "#/components/schemas/Problems"
-          }
-        },
-        "type": "object",
-        "required": [
-          "provider",
-          "provider_config",
-          "data"
-        ],
-        "title": "Body_problems"
-      },
-      "Body_questions": {
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "descriptor",
-              "openai"
-            ],
-            "title": "Provider"
-          },
-          "provider_config": {
-            "$ref": "#/components/schemas/ProviderConfig"
-          },
-          "data": {
-            "$ref": "#/components/schemas/Questions"
-          }
-        },
-        "type": "object",
-        "required": [
-          "provider",
-          "provider_config",
-          "data"
-        ],
-        "title": "Body_questions"
-      },
-      "Body_sentiment": {
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "descriptor",
-              "openai"
-            ],
-            "title": "Provider"
-          },
-          "provider_config": {
-            "$ref": "#/components/schemas/ProviderConfig"
-          },
-          "data": {
-            "$ref": "#/components/schemas/Sentiment"
-          }
-        },
-        "type": "object",
-        "required": [
-          "provider",
-          "provider_config",
-          "data"
-        ],
-        "title": "Body_sentiment"
-      },
-      "Body_summary": {
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "descriptor",
-              "openai"
-            ],
-            "title": "Provider"
-          },
-          "provider_config": {
-            "$ref": "#/components/schemas/ProviderConfig"
-          },
-          "data": {
-            "$ref": "#/components/schemas/Summary"
-          }
-        },
-        "type": "object",
-        "required": [
-          "provider",
-          "provider_config",
-          "data"
-        ],
-        "title": "Body_summary"
-      },
-      "Body_topics": {
-        "properties": {
-          "provider": {
-            "type": "string",
-            "enum": [
-              "azure",
-              "claude",
-              "descriptor",
-              "openai"
-            ],
-            "title": "Provider"
-          },
-          "provider_config": {
-            "$ref": "#/components/schemas/ProviderConfig"
-          },
-          "data": {
-            "$ref": "#/components/schemas/Topics"
-          }
-        },
-        "type": "object",
-        "required": [
-          "provider",
-          "provider_config",
-          "data"
-        ],
-        "title": "Body_topics"
-      },
-      "Config": {
-        "properties": {
-          "config": {
-            "$ref": "#/components/schemas/RecognitionConfig",
-            "default": {
-              "language_code": "en-US",
-              "transcript_model": "openai_whisper",
-              "emotions_model": "emotions",
-              "emotions_alignment": false,
-              "emotions_diarization": false,
-              "channels": 2,
-              "insights": {
-
-              },
-              "metrics": []
-            }
-          },
-          "options": {
-            "$ref": "#/components/schemas/Options",
-            "default": {
-              "language_code": [
-                "en-US",
-                "he-IL",
-                "hi-IN",
-                "es-ES",
-                "fr-FR",
-                "de-DE",
-                "it-IT"
-              ],
-              "transcript_model": [
-                "openai_whisper"
-              ],
-              "emotions_model": [
-                "emotions",
-                null],
-              "insights": [
-                "agent_actions",
-                "csat",
-                "customer_requests",
-                "division",
-                "keywords",
-                "label",
-                "problems",
-                "questions",
-                "sentiment",
-                "summary",
-                "topics"
-              ],
-              "metrics": [
-                "speech",
-                "emo",
-                "problems",
-                "intervals"
-              ]
-            }
-          }
-        },
-        "type": "object",
-        "title": "Config"
-      },
-      "Csat": {
-        "properties": {
-          "transcript": {
-            "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
-            },
-            "type": "array",
-            "title": "Transcript"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language"
-          },
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "required": [
-          "transcript",
-          "language"
-        ],
-        "title": "Csat"
-      },
-      "CsatModel": {
-        "properties": {
-          "reason": {
-            "type": "string",
-            "title": "Reason"
-          },
-          "csat": {
-            "type": "number",
-            "maximum": 5,
-            "minimum": 1,
-            "title": "Csat"
-          }
-        },
-        "type": "object",
-        "required": [
-          "reason",
-          "csat"
-        ],
-        "title": "CsatModel",
-        "description": "Model representing sentiment analysis results."
-      },
-      "CustomerRequests": {
-        "properties": {
-          "transcript": {
-            "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
-            },
-            "type": "array",
-            "title": "Transcript"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language"
-          },
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "required": [
-          "transcript",
-          "language"
-        ],
-        "title": "CustomerRequests",
-        "description": "Find all customer requests during the call"
-      },
-      "Division": {
-        "properties": {
-          "transcript": {
-            "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
-            },
-            "type": "array",
-            "title": "Transcript"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language"
-          },
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "required": [
-          "transcript",
-          "language"
-        ],
-        "title": "Division",
-        "description": "Divide conversation to introduction, negotiation, resolution"
-      },
-      "DivisionModel": {
-        "properties": {
-          "introduction": {
-            "$ref": "#/components/schemas/DivisionPart"
-          },
-          "negotiation": {
-            "$ref": "#/components/schemas/DivisionPart"
-          },
-          "resolution": {
-            "$ref": "#/components/schemas/DivisionPart"
-          }
-        },
-        "type": "object",
-        "required": [
-          "introduction",
-          "negotiation",
-          "resolution"
-        ],
-        "title": "DivisionModel",
-        "description": "Converstion division to parts introduction - negotiation - resolution"
-      },
-      "DivisionPart": {
-        "properties": {
-          "start": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Start"
-          },
-          "end": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "End"
-          }
-        },
-        "type": "object",
-        "required": [
-          "start",
-          "end"
-        ],
-        "title": "DivisionPart"
-      },
-      "EmotionalScore": {
-        "properties": {
-          "result": {
-            "type": "number",
-            "maximum": 1,
-            "minimum": 0,
-            "title": "Result"
-          }
-        },
-        "type": "object",
-        "required": [
-          "result"
-        ],
-        "title": "EmotionalScore",
-        "description": "Emoional response score"
-      },
-      "FinalTranscript": {
-        "properties": {
-          "text": {
-            "type": "string",
-            "title": "Text"
-          },
-          "start": {
-            "type": "number",
-            "title": "Start"
-          },
-          "end": {
-            "type": "number",
-            "title": "End"
-          },
-          "speaker": {
-            "type": "integer",
-            "title": "Speaker",
-            "default": 0
-          },
-          "emotion": {
-            "anyOf": [
-              {
-                "type": "string",
-                "enum": [
-                  "angry",
-                  "cautious",
-                  "cheerful",
-                  "friendly",
-                  "frustrated",
-                  "impatient",
-                  "neutral",
-                  "stressed",
-                  "surprised",
-                  "thankful",
-                  "fear"
-                ]
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotion"
-          }
-        },
-        "type": "object",
-        "required": [
-          "text",
-          "start",
-          "end"
-        ],
-        "title": "FinalTranscript",
-        "description": "Final Transcript",
-        "examples": [
-          {
-            "emotion": "friendly",
-            "end": 12,
-            "speaker": 0,
-            "start": 0,
-            "text": "Hello! How can I help you?"
-          }
-        ]
-      },
-      "FinalTranscriptWithEmotions": {
-        "properties": {
-          "text": {
-            "type": "string",
-            "title": "Text"
-          },
-          "start": {
-            "type": "number",
-            "title": "Start"
-          },
-          "end": {
-            "type": "number",
-            "title": "End"
-          },
-          "speaker": {
-            "type": "integer",
-            "title": "Speaker",
-            "default": 0
-          },
-          "emotion": {
-            "type": "string",
-            "enum": [
-              "angry",
-              "cautious",
-              "cheerful",
-              "friendly",
-              "frustrated",
-              "impatient",
-              "neutral",
-              "stressed",
-              "surprised",
-              "thankful",
-              "fear"
-            ],
-            "title": "Emotion"
-          }
-        },
-        "type": "object",
-        "required": [
-          "text",
-          "start",
-          "end",
-          "emotion"
-        ],
-        "title": "FinalTranscriptWithEmotions",
-        "examples": [
-          {
-            "emotion": "friendly",
-            "end": 12,
-            "speaker": 0,
-            "start": 0,
-            "text": "Hello! How can I help you?"
-          }
-        ]
-      },
-      "HTTPValidationError": {
-        "properties": {
-          "detail": {
-            "items": {
-              "$ref": "#/components/schemas/ValidationError"
-            },
-            "type": "array",
-            "title": "Detail"
-          }
-        },
-        "type": "object",
-        "title": "HTTPValidationError"
-      },
-      "InsightOptions": {
-        "properties": {
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "title": "InsightOptions"
-      },
-      "InsightsResultModel-Input": {
-        "properties": {
-          "agent_actions": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextInsightsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "csat": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/CsatModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "customer_requests": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextInsightsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "division": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/DivisionModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "keywords": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/KeywordsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "label": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextInsightsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "problems": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ProblemsModel-Input"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "questions": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextInsightsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "sentiment": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/FinalTranscript"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Sentiment"
-          },
-          "summary": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextInsightsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "topics": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextInsightsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "type": "object",
-        "title": "InsightsResultModel"
-      },
-      "InsightsResultModel-Output": {
-        "properties": {
-          "agent_actions": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextInsightsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "csat": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/CsatModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "customer_requests": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextInsightsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "division": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/DivisionModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "keywords": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/KeywordsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "label": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextInsightsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "problems": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ProblemsModel-Output"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "questions": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextInsightsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "sentiment": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/FinalTranscript"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Sentiment"
-          },
-          "summary": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextInsightsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "topics": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/TextInsightsModel"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "type": "object",
-        "title": "InsightsResultModel"
-      },
-      "IntervalMetricsModel": {
-        "properties": {
-          "total_call_duration": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Total Call Duration"
-          },
-          "speaker_to_silence_ratio": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Speaker To Silence Ratio"
-          },
-          "total_speech_to_silence_ratio": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Total Speech To Silence Ratio"
-          },
-          "speaker_speech_ratio": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Speaker Speech Ratio"
-          },
-          "simultaneous_speech_time": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Simultaneous Speech Time"
-          },
-          "simultaneous_speech_ratio": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Simultaneous Speech Ratio"
-          },
-          "csat_rate": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Csat Rate"
-          },
-          "dsat": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Dsat"
-          },
-          "interruption_count": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Interruption Count"
-          },
-          "interruption_rate": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Interruption Rate"
-          },
-          "emotional_volatility": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotional Volatility"
-          },
-          "emotional_evolution": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotional Evolution"
-          },
-          "emotional_phrases": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "additionalProperties": {
-                    "anyOf": [
-                      {
-                        "items": {
-                          "type": "string"
-                        },
-                        "type": "array"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ]
-                  },
-                  "propertyNames": {
-                    "enum": [
-                      "angry",
-                      "cautious",
-                      "cheerful",
-                      "friendly",
-                      "frustrated",
-                      "impatient",
-                      "neutral",
-                      "stressed",
-                      "surprised",
-                      "thankful",
-                      "fear"
-                    ]
-                  },
-                  "type": "object"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotional Phrases"
-          }
-        },
-        "type": "object",
-        "title": "IntervalMetricsModel"
-      },
-      "Keyword": {
-        "properties": {
-          "keyword": {
-            "type": "string",
-            "title": "Keyword"
-          },
-          "emotion": {
-            "type": "string",
-            "enum": [
-              "angry",
-              "cautious",
-              "cheerful",
-              "friendly",
-              "frustrated",
-              "impatient",
-              "neutral",
-              "stressed",
-              "surprised",
-              "thankful",
-              "fear"
-            ],
-            "title": "Emotion"
-          },
-          "count": {
-            "type": "integer",
-            "title": "Count"
-          }
-        },
-        "type": "object",
-        "required": [
-          "keyword",
-          "emotion",
-          "count"
-        ],
-        "title": "Keyword"
-      },
-      "Keywords": {
-        "properties": {
-          "transcript": {
-            "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
-            },
-            "type": "array",
-            "title": "Transcript"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language"
-          },
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "required": [
-          "transcript",
-          "language"
-        ],
-        "title": "Keywords",
-        "description": "Detected keywords in the transcript"
-      },
-      "KeywordsModel": {
-        "items": {
-          "$ref": "#/components/schemas/Keyword"
-        },
-        "type": "array",
-        "title": "KeywordsModel",
-        "description": "Detected keywords in the transcript"
-      },
-      "Label": {
-        "properties": {
-          "transcript": {
-            "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
-            },
-            "type": "array",
-            "title": "Transcript"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language"
-          },
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
-          },
-          "labels": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array",
-            "title": "Labels",
-            "default": [
-              "other"
-            ]
-          }
-        },
-        "type": "object",
-        "required": [
-          "transcript",
-          "language"
-        ],
-        "title": "Label",
-        "description": "Add label to the call"
-      },
-      "MetricsModel-Input": {
-        "properties": {
-          "total_call_duration": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Total Call Duration"
-          },
-          "speaker_to_silence_ratio": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Speaker To Silence Ratio"
-          },
-          "total_speech_to_silence_ratio": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Total Speech To Silence Ratio"
-          },
-          "speaker_speech_ratio": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Speaker Speech Ratio"
-          },
-          "simultaneous_speech_time": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Simultaneous Speech Time"
-          },
-          "simultaneous_speech_ratio": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Simultaneous Speech Ratio"
-          },
-          "csat_rate": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Csat Rate"
-          },
-          "dsat": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Dsat"
-          },
-          "interruption_count": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Interruption Count"
-          },
-          "interruption_rate": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Interruption Rate"
-          },
-          "emotional_volatility": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotional Volatility"
-          },
-          "emotional_evolution": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotional Evolution"
-          },
-          "emotional_phrases": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "additionalProperties": {
-                    "anyOf": [
-                      {
-                        "items": {
-                          "type": "string"
-                        },
-                        "type": "array"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ]
-                  },
-                  "propertyNames": {
-                    "enum": [
-                      "angry",
-                      "cautious",
-                      "cheerful",
-                      "friendly",
-                      "frustrated",
-                      "impatient",
-                      "neutral",
-                      "stressed",
-                      "surprised",
-                      "thankful",
-                      "fear"
-                    ]
-                  },
-                  "type": "object"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotional Phrases"
-          },
-          "csat_problems": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Csat Problems"
-          },
-          "problems": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ProblemModel"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Problems"
-          }
-        },
-        "type": "object",
-        "title": "MetricsModel"
-      },
-      "MetricsModel-Output": {
-        "properties": {
-          "total_call_duration": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Total Call Duration"
-          },
-          "speaker_to_silence_ratio": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Speaker To Silence Ratio"
-          },
-          "total_speech_to_silence_ratio": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Total Speech To Silence Ratio"
-          },
-          "speaker_speech_ratio": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Speaker Speech Ratio"
-          },
-          "simultaneous_speech_time": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Simultaneous Speech Time"
-          },
-          "simultaneous_speech_ratio": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Simultaneous Speech Ratio"
-          },
-          "csat_rate": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Csat Rate"
-          },
-          "dsat": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Dsat"
-          },
-          "interruption_count": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Interruption Count"
-          },
-          "interruption_rate": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Interruption Rate"
-          },
-          "emotional_volatility": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotional Volatility"
-          },
-          "emotional_evolution": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "type": "number"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotional Evolution"
-          },
-          "emotional_phrases": {
-            "anyOf": [
-              {
-                "additionalProperties": {
-                  "additionalProperties": {
-                    "anyOf": [
-                      {
-                        "items": {
-                          "type": "string"
-                        },
-                        "type": "array"
-                      },
-                      {
-                        "type": "null"
-                      }
-                    ]
-                  },
-                  "propertyNames": {
-                    "enum": [
-                      "angry",
-                      "cautious",
-                      "cheerful",
-                      "friendly",
-                      "frustrated",
-                      "impatient",
-                      "neutral",
-                      "stressed",
-                      "surprised",
-                      "thankful",
-                      "fear"
-                    ]
-                  },
-                  "type": "object"
-                },
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotional Phrases"
-          },
-          "csat_problems": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Csat Problems"
-          },
-          "problems": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/ProblemModel"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Problems"
-          }
-        },
-        "type": "object",
-        "title": "MetricsModel"
-      },
-      "MetricsRootModel-Input": {
-        "properties": {
-          "overall": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/MetricsModel-Input"
-              },
-              {
-                "$ref": "#/components/schemas/IntervalMetricsModel"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Overall"
-          },
-          "intervals": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/IntervalMetricsModel"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Intervals"
-          },
-          "emotional_score": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/EmotionalScore"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "type": "object",
-        "title": "MetricsRootModel"
-      },
-      "MetricsRootModel-Output": {
-        "properties": {
-          "overall": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/MetricsModel-Output"
-              },
-              {
-                "$ref": "#/components/schemas/IntervalMetricsModel"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Overall"
-          },
-          "intervals": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/IntervalMetricsModel"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Intervals"
-          },
-          "emotional_score": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/EmotionalScore"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          }
-        },
-        "type": "object",
-        "title": "MetricsRootModel"
-      },
-      "Options": {
-        "properties": {
-          "language_code": {
-            "prefixItems": [
-              {
-                "type": "string",
-                "enum": [
-                  "en-US",
-                  "he-IL",
-                  "hi-IN",
-                  "es-ES",
-                  "fr-FR",
-                  "de-DE",
-                  "it-IT"
-                ]
-              }
-            ],
-            "type": "array",
-            "maxItems": 1,
-            "minItems": 1,
-            "title": "Language Code",
-            "default": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ]
-          },
-          "transcript_model": {
-            "prefixItems": [
-              {
-                "type": "string",
-                "const": "openai_whisper"
-              }
-            ],
-            "type": "array",
-            "maxItems": 1,
-            "minItems": 1,
-            "title": "Transcript Model",
-            "default": [
-              "openai_whisper"
-            ]
-          },
-          "emotions_model": {
-            "prefixItems": [
-              {
-                "enum": [
-                  "emotions",
-                  null]
-              }
-            ],
-            "type": "array",
-            "maxItems": 1,
-            "minItems": 1,
-            "title": "Emotions Model",
-            "default": [
-              "emotions",
-              null]
-          },
-          "insights": {
-            "prefixItems": [
-              {
-                "type": "string",
-                "enum": [
-                  "agent_actions",
-                  "csat",
-                  "customer_requests",
-                  "division",
-                  "keywords",
-                  "label",
-                  "problems",
-                  "questions",
-                  "sentiment",
-                  "summary",
-                  "topics"
-                ]
-              }
-            ],
-            "type": "array",
-            "maxItems": 1,
-            "minItems": 1,
-            "title": "Insights",
-            "default": [
-              "agent_actions",
-              "csat",
-              "customer_requests",
-              "division",
-              "keywords",
-              "label",
-              "problems",
-              "questions",
-              "sentiment",
-              "summary",
-              "topics"
-            ]
-          },
-          "metrics": {
-            "prefixItems": [
-              {
-                "type": "string",
-                "enum": [
-                  "speech",
-                  "emo",
-                  "problems",
-                  "intervals"
-                ]
-              }
-            ],
-            "type": "array",
-            "maxItems": 1,
-            "minItems": 1,
-            "title": "Metrics",
-            "default": [
-              "speech",
-              "emo",
-              "problems",
-              "intervals"
-            ]
-          }
-        },
-        "type": "object",
-        "title": "Options"
-      },
       "Pipeline": {
+        "type": "object",
+        "description": "Main configuration for audio processing",
+        "required": ["config", "audio"],
         "properties": {
           "config": {
             "$ref": "#/components/schemas/RecognitionConfig"
@@ -2697,800 +132,319 @@
           },
           "call_data": {
             "$ref": "#/components/schemas/RecognitionMeta",
-            "default": {
-
+            "default": {}
+          }
+        },
+        "example": {
+          "config": {
+            "language_code": "en-US",
+            "insights": {
+              "summary": {
+                "prompt_customization": "Focus on key points and action items"
+              },
+              "sentiment": {},
+              "topics": {}
             }
+          },
+          "audio": {
+            "uri": "https://example.com/audio.wav"
           }
-        },
-        "type": "object",
-        "required": [
-          "config",
-          "audio"
-        ],
-        "title": "Pipeline"
-      },
-      "ProblemItem": {
-        "properties": {
-          "problem_source": {
-            "type": "string",
-            "title": "Problem Source"
-          },
-          "start": {
-            "type": "number",
-            "title": "Start"
-          },
-          "end": {
-            "type": "number",
-            "title": "End"
-          },
-          "speaker_id": {
-            "type": "integer",
-            "title": "Speaker Id"
-          },
-          "solved": {
-            "type": "boolean",
-            "title": "Solved"
-          },
-          "resolution_summary": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Resolution Summary"
-          },
-          "solution_start": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Solution Start"
-          },
-          "solution_end": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Solution End"
-          },
-          "solving_time": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Solving Time"
-          },
-          "solving_time_ratio": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Solving Time Ratio"
-          }
-        },
-        "type": "object",
-        "required": [
-          "problem_source",
-          "start",
-          "end",
-          "speaker_id",
-          "solved",
-          "resolution_summary",
-          "solution_start",
-          "solution_end",
-          "solving_time",
-          "solving_time_ratio"
-        ],
-        "title": "ProblemItem"
-      },
-      "ProblemModel": {
-        "properties": {
-          "title": {
-            "type": "string",
-            "title": "Title"
-          },
-          "messages": {
-            "items": {
-              "$ref": "#/components/schemas/ProblemItem"
-            },
-            "type": "array",
-            "title": "Messages"
-          }
-        },
-        "type": "object",
-        "required": [
-          "title",
-          "messages"
-        ],
-        "title": "ProblemModel"
-      },
-      "Problems": {
-        "properties": {
-          "transcript": {
-            "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
-            },
-            "type": "array",
-            "title": "Transcript"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language"
-          },
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "required": [
-          "transcript",
-          "language"
-        ],
-        "title": "Problems",
-        "description": "Find all problems that were discussed during the call"
-      },
-      "ProblemsModel-Input": {
-        "items": {
-          "$ref": "#/components/schemas/ProblemModel"
-        },
-        "type": "array",
-        "title": "ProblemsModel",
-        "description": "Converstion Problems with additional data"
-      },
-      "ProblemsModel-Output": {
-        "items": {
-          "$ref": "#/components/schemas/ProblemModel"
-        },
-        "type": "array",
-        "title": "ProblemsModel",
-        "description": "Converstion Problems with additional data"
-      },
-      "ProviderConfig": {
-        "properties": {
-          "model": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Model"
-          },
-          "method": {
-            "type": "string",
-            "enum": [
-              "chat",
-              "completion"
-            ],
-            "title": "Method",
-            "default": "chat"
-          },
-          "max_attempts": {
-            "type": "integer",
-            "maximum": 10,
-            "minimum": 1,
-            "title": "Max Attempts",
-            "default": 1
-          }
-        },
-        "type": "object",
-        "title": "ProviderConfig",
-        "examples": [
-          {
-            "max_attempts": 1,
-            "method": "chat"
-          }
-        ]
-      },
-      "Questions": {
-        "properties": {
-          "transcript": {
-            "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
-            },
-            "type": "array",
-            "title": "Transcript"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language"
-          },
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "required": [
-          "transcript",
-          "language"
-        ],
-        "title": "Questions",
-        "description": "Find all phrases containing questions that customer asked during the call"
-      },
-      "RecognitionAudio": {
-        "properties": {
-          "uri": {
-            "type": "string",
-            "minLength": 1,
-            "format": "uri",
-            "title": "Uri"
-          }
-        },
-        "type": "object",
-        "required": [
-          "uri"
-        ],
-        "title": "RecognitionAudio"
+        }
       },
       "RecognitionConfig": {
+        "type": "object",
+        "description": "Configuration for audio processing pipeline",
         "properties": {
           "language_code": {
             "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
+            "enum": ["en-US", "he-IL", "hi-IN", "es-ES", "fr-FR", "de-DE", "it-IT"],
             "title": "Language Code",
-            "default": "en-US"
+            "default": "en-US",
+            "description": "Primary language of the audio file"
           },
           "transcript_model": {
             "type": "string",
-            "enum": [
-              "openai_whisper"
-            ],
+            "enum": ["openai_whisper"],
             "title": "Transcript Model",
-            "default": "openai_whisper"
+            "default": "openai_whisper",
+            "description": "Speech-to-text model to use for transcription"
           },
           "emotions_model": {
             "type": "string",
-            "enum": [
-              "emotions",
-              null
-            ],
+            "enum": ["emotions", null],
             "title": "Emotions Model",
-            "default": "emotions"
+            "default": "emotions",
+            "description": "Model to use for emotion detection. Set to null to disable"
           },
           "emotions_alignment": {
             "type": "boolean",
             "title": "Emotions Alignment",
-            "default": false
+            "default": false,
+            "description": "Enable temporal alignment of emotions with speech"
           },
           "emotions_diarization": {
             "type": "boolean",
             "title": "Emotions Diarization",
-            "default": false
+            "default": false,
+            "description": "Enable speaker-based emotion diarization"
           },
           "channels": {
             "type": "integer",
-            "maximum": 8,
-            "minimum": 1,
+            "enum": [1, 2],
             "title": "Channels",
-            "default": 2
+            "default": 2,
+            "description": "Number of audio channels (1 for mono, 2 for stereo)"
           },
           "insights": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "agent_actions",
-                "csat",
-                "customer_requests", 
-                "division",
-                "keywords",
-                "label",
-                "problems",
-                "questions",
-                "sentiment",
-                "summary",
-                "topics"
-              ]
+            "type": "object",
+            "description": "Configure which insights to generate and their options",
+            "properties": {
+              "agent_actions": {
+                "type": "object",
+                "properties": {
+                  "prompt_customization": {
+                    "type": "string",
+                    "description": "Custom prompt for agent actions analysis",
+                    "default": ""
+                  }
+                }
+              },
+              "csat": {
+                "type": "object",
+                "properties": {
+                  "prompt_customization": {
+                    "type": "string",
+                    "description": "Custom prompt for CSAT analysis",
+                    "default": ""
+                  }
+                }
+              },
+              "customer_requests": {
+                "type": "object",
+                "properties": {
+                  "prompt_customization": {
+                    "type": "string",
+                    "description": "Custom prompt for customer requests analysis",
+                    "default": ""
+                  }
+                }
+              },
+              "division": {
+                "type": "object",
+                "properties": {
+                  "prompt_customization": {
+                    "type": "string",
+                    "description": "Custom prompt for conversation division analysis",
+                    "default": ""
+                  }
+                }
+              },
+              "keywords": {
+                "type": "object",
+                "properties": {
+                  "prompt_customization": {
+                    "type": "string",
+                    "description": "Custom prompt for keywords extraction",
+                    "default": ""
+                  }
+                }
+              },
+              "label": {
+                "type": "object",
+                "properties": {
+                  "prompt_customization": {
+                    "type": "string",
+                    "description": "Custom prompt for labeling",
+                    "default": ""
+                  },
+                  "labels": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of labels to classify the conversation"
+                  }
+                }
+              },
+              "problems": {
+                "type": "object",
+                "properties": {
+                  "prompt_customization": {
+                    "type": "string",
+                    "description": "Custom prompt for problems detection",
+                    "default": ""
+                  }
+                }
+              },
+              "questions": {
+                "type": "object",
+                "properties": {
+                  "prompt_customization": {
+                    "type": "string",
+                    "description": "Custom prompt for questions analysis",
+                    "default": ""
+                  }
+                }
+              },
+              "sentiment": {
+                "type": "object",
+                "properties": {
+                  "prompt_customization": {
+                    "type": "string",
+                    "description": "Custom prompt for sentiment analysis",
+                    "default": ""
+                  }
+                }
+              },
+              "summary": {
+                "type": "object",
+                "properties": {
+                  "prompt_customization": {
+                    "type": "string",
+                    "description": "Custom prompt for summary generation",
+                    "default": ""
+                  }
+                }
+              },
+              "topics": {
+                "type": "object",
+                "properties": {
+                  "prompt_customization": {
+                    "type": "string",
+                    "description": "Custom prompt for topics extraction",
+                    "default": ""
+                  }
+                }
+              }
             },
-            "uniqueItems": true,
-            "title": "Insights",
-            "default": []
-          },
-          "metrics": {
-            "items": {
-              "type": "string",
-              "enum": [
-                "speech",
-                "emo",
-                "problems",
-                "intervals"
-              ]
-            },
-            "type": "array",
-            "uniqueItems": true,
-            "title": "Metrics",
-            "default": []
+            "default": {}
           },
           "webhook": {
-            "anyOf": [
-              {
-                "type": "string",
-                "maxLength": 2083,
-                "minLength": 1,
-                "format": "uri"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Webhook"
+            "type": "string",
+            "format": "uri",
+            "title": "Webhook",
+            "description": "URL to receive processing results when complete",
+            "nullable": true,
+            "default": null
           }
-        },
+        }
+      },
+      "RecognitionAudio": {
         "type": "object",
-        "title": "RecognitionConfig"
+        "description": "Audio file information",
+        "required": ["uri"],
+        "properties": {
+          "uri": {
+            "type": "string",
+            "format": "uri",
+            "title": "URI",
+            "description": "Publicly accessible URL to the audio file"
+          }
+        }
       },
       "RecognitionMeta": {
+        "type": "object",
+        "description": "Optional metadata about the call",
         "properties": {
           "id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Id"
+            "type": "string",
+            "title": "ID",
+            "description": "Your internal identifier for this call"
           },
           "timestamp": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Timestamp"
+            "type": "string",
+            "format": "date-time",
+            "title": "Timestamp",
+            "description": "When the call occurred"
           },
           "speakers": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/Speaker"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Speakers"
-          }
-        },
-        "additionalProperties": true,
-        "type": "object",
-        "title": "RecognitionMeta"
-      },
-      "Result-Input": {
-        "properties": {
-          "job_id": {
-            "type": "string",
-            "title": "Job Id"
-          },
-          "transcript": {
-            "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
-            },
             "type": "array",
-            "title": "Transcript"
-          },
-          "config": {
-            "$ref": "#/components/schemas/RecognitionConfig"
-          },
-          "audio": {
-            "$ref": "#/components/schemas/RecognitionAudio"
-          },
-          "call_data": {
-            "$ref": "#/components/schemas/RecognitionMeta"
-          },
-          "insights": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/InsightsResultModel-Input"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "emotions_alignment": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "object"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotions Alignment"
-          },
-          "emotions_diarization": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "object"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotions Diarization"
-          },
-          "transcript_diarization": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/FinalTranscript"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Transcript Diarization"
-          },
-          "metrics": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/MetricsRootModel-Input"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "failed": {
-            "anyOf": [
-              {
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Failed"
-          }
-        },
-        "type": "object",
-        "required": [
-          "job_id",
-          "transcript",
-          "config",
-          "audio",
-          "call_data"
-        ],
-        "title": "Result"
-      },
-      "Result-Output": {
-        "properties": {
-          "job_id": {
-            "type": "string",
-            "title": "Job Id"
-          },
-          "transcript": {
             "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Speaker identifier"
+                },
+                "label": {
+                  "type": "string",
+                  "description": "Display name for the speaker"
+                },
+                "role": {
+                  "type": "string",
+                  "enum": ["agent", "customer"],
+                  "description": "Role of the speaker"
+                }
+              },
+              "required": ["id", "role"]
             },
-            "type": "array",
-            "title": "Transcript"
-          },
-          "config": {
-            "$ref": "#/components/schemas/RecognitionConfig"
-          },
-          "audio": {
-            "$ref": "#/components/schemas/RecognitionAudio"
-          },
-          "call_data": {
-            "$ref": "#/components/schemas/RecognitionMeta"
-          },
-          "insights": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/InsightsResultModel-Output"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "emotions_alignment": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "object"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotions Alignment"
-          },
-          "emotions_diarization": {
-            "anyOf": [
-              {
-                "items": {
-                  "type": "object"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Emotions Diarization"
-          },
-          "transcript_diarization": {
-            "anyOf": [
-              {
-                "items": {
-                  "$ref": "#/components/schemas/FinalTranscript"
-                },
-                "type": "array"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Transcript Diarization"
-          },
-          "metrics": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/MetricsRootModel-Output"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "failed": {
-            "anyOf": [
-              {
-                "type": "object"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Failed"
+            "description": "Information about speakers in the call"
           }
-        },
-        "type": "object",
-        "required": [
-          "job_id",
-          "transcript",
-          "config",
-          "audio",
-          "call_data"
-        ],
-        "title": "Result"
+        }
       },
       "ResultId": {
+        "type": "object",
         "properties": {
           "result_id": {
             "type": "string",
-            "title": "Result Id"
+            "title": "Result ID",
+            "description": "Identifier to retrieve the analysis results"
           }
-        },
+        }
+      },
+      "Result": {
         "type": "object",
-        "required": [
-          "result_id"
-        ],
-        "title": "ResultId"
-      },
-      "RootModel_list_Keyword__": {
-        "items": {
-          "$ref": "#/components/schemas/Keyword"
-        },
-        "type": "array",
-        "title": "RootModel[list[Keyword]]"
-      },
-      "Sentiment": {
         "properties": {
-          "transcript": {
-            "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
-            },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "processing", "completed", "failed"],
+            "description": "Current status of the analysis"
+          },
+          "progress": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Processing progress percentage"
+          },
+          "result": {
+            "type": "object",
+            "description": "Analysis results when processing is complete"
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message if processing failed"
+          }
+        }
+      },
+      "ErrorModel": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Error code"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          }
+        }
+      },
+      "HTTPValidationError": {
+        "type": "object",
+        "properties": {
+          "detail": {
             "type": "array",
-            "title": "Transcript"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language"
-          },
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "required": [
-          "transcript",
-          "language"
-        ],
-        "title": "Sentiment"
-      },
-      "SentimentModel": {
-        "items": {
-          "$ref": "#/components/schemas/FinalTranscriptWithEmotions"
-        },
-        "type": "array",
-        "title": "SentimentModel",
-        "description": "Model representing sentiment analysis results."
-      },
-      "Speaker": {
-        "properties": {
-          "id": {
-            "type": "string",
-            "title": "Id"
-          },
-          "label": {
-            "type": "string",
-            "title": "Label"
-          },
-          "role": {
-            "type": "string",
-            "title": "Role"
-          }
-        },
-        "type": "object",
-        "required": [
-          "id",
-          "label",
-          "role"
-        ],
-        "title": "Speaker"
-      },
-      "Summary": {
-        "properties": {
-          "transcript": {
             "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
-            },
-            "type": "array",
-            "title": "Transcript"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language"
-          },
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
+              "$ref": "#/components/schemas/ValidationError"
+            }
           }
-        },
-        "type": "object",
-        "required": [
-          "transcript",
-          "language"
-        ],
-        "title": "Summary",
-        "description": "Convert call transcript into a summary of the call"
-      },
-      "TextInsightsModel": {
-        "type": "string",
-        "title": "TextInsightsModel",
-        "description": "Plain text insights"
-      },
-      "Topics": {
-        "properties": {
-          "transcript": {
-            "items": {
-              "$ref": "#/components/schemas/FinalTranscript"
-            },
-            "type": "array",
-            "title": "Transcript"
-          },
-          "language": {
-            "type": "string",
-            "enum": [
-              "en-US",
-              "he-IL",
-              "hi-IN",
-              "es-ES",
-              "fr-FR",
-              "de-DE",
-              "it-IT"
-            ],
-            "title": "Language"
-          },
-          "prompt_customization": {
-            "type": "string",
-            "title": "Prompt Customization",
-            "default": ""
-          }
-        },
-        "type": "object",
-        "required": [
-          "transcript",
-          "language"
-        ],
-        "title": "Topics",
-        "description": "Discover the call topic"
+        }
       },
       "ValidationError": {
+        "type": "object",
         "properties": {
           "loc": {
+            "type": "array",
             "items": {
               "anyOf": [
                 {
@@ -3500,26 +454,15 @@
                   "type": "integer"
                 }
               ]
-            },
-            "type": "array",
-            "title": "Location"
+            }
           },
           "msg": {
-            "type": "string",
-            "title": "Message"
+            "type": "string"
           },
           "type": {
-            "type": "string",
-            "title": "Error Type"
+            "type": "string"
           }
-        },
-        "type": "object",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
-        "title": "ValidationError"
+        }
       }
     },
     "securitySchemes": {
